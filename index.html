@@ -4,7 +4,6 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
 <meta name="apple-mobile-web-app-title" content="StickerMe🌸"/>
 <meta name="theme-color" content="#fce4ec"/>
 <title>StickerMe 🌸</title>
@@ -14,769 +13,631 @@
   --pink:#f9a8c9;--pink2:#f472a8;--pink3:#fce4ec;
   --mint:#a8e6cf;--mint2:#4db6a0;
   --yellow:#ffd966;--yellow2:#ffb347;
-  --lavender:#c9b8e8;--lavender2:#9c7ed4;
   --peach:#ffcba4;--peach2:#ff8c69;
-  --sky:#b3e5fc;--sky2:#4fc3f7;
+  --sky:#b3e5fc;
   --white:#fffdf9;--cream:#fff8f0;
   --text:#5a3e4b;--text2:#8a6575;--text3:#bba8b2;
   --shadow:0 4px 20px rgba(249,168,201,.25);
   --shadow2:0 2px 12px rgba(249,168,201,.18);
-  --radius:20px;--radius2:14px;
+  --r:20px;--r2:14px;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);min-height:100vh;overflow-x:hidden}
-
-/* floating petals bg */
 .petals-bg{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
-.petal{position:absolute;font-size:18px;opacity:.35;animation:fall linear infinite}
-@keyframes fall{0%{transform:translateY(-40px) rotate(0deg);opacity:.4}100%{transform:translateY(110vh) rotate(360deg);opacity:0}}
+.petal{position:absolute;animation:fall linear infinite;opacity:.3}
+@keyframes fall{0%{transform:translateY(-30px) rotate(0deg)}100%{transform:translateY(105vh) rotate(400deg)}}
 
-/* ── TOP NAV ── */
-.nav{position:sticky;top:0;z-index:100;background:rgba(255,253,249,.92);backdrop-filter:blur(14px);border-bottom:2px solid var(--pink3);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow2)}
-.nav-logo{font-family:'Pacifico',cursive;font-size:22px;color:var(--pink2);letter-spacing:.5px}
-.nav-logo span{font-size:20px}
-.nav-tabs{display:flex;gap:4px}
-.tab-btn{background:none;border:2px solid transparent;border-radius:30px;padding:7px 14px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--text2);cursor:pointer;transition:all .2s;white-space:nowrap}
-.tab-btn.active{background:var(--pink);border-color:var(--pink2);color:var(--white)}
-.tab-btn:hover:not(.active){background:var(--pink3)}
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;background:rgba(255,253,249,.93);backdrop-filter:blur(14px);border-bottom:2px solid var(--pink3);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow2)}
+.logo{font-family:'Pacifico',cursive;font-size:21px;color:var(--pink2)}
+.tabs{display:flex;gap:4px}
+.tb{background:none;border:2px solid transparent;border-radius:30px;padding:7px 13px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--text2);cursor:pointer;transition:all .2s}
+.tb.on{background:var(--pink);border-color:var(--pink2);color:#fff}
+.tb:hover:not(.on){background:var(--pink3)}
 
-/* ── PAGES ── */
-.page{display:none;position:relative;z-index:1;animation:fadeIn .3s ease}
-.page.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+/* PAGES */
+.pg{display:none;position:relative;z-index:1;animation:fi .3s ease}
+.pg.on{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
-/* ── HOME ── */
-.home-wrap{padding:28px 20px 40px;max-width:500px;margin:0 auto;text-align:center}
-.home-hero{margin-bottom:28px}
-.home-title{font-family:'Pacifico',cursive;font-size:36px;color:var(--pink2);line-height:1.2;margin-bottom:10px}
-.home-subtitle{font-size:15px;color:var(--text2);line-height:1.7}
-.home-illus{font-size:56px;margin:18px 0;display:block;animation:bounce 2s ease-in-out infinite}
-@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-.feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px 0}
-.feature-card{background:var(--white);border:2px solid var(--pink3);border-radius:var(--radius2);padding:18px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;box-shadow:var(--shadow2)}
-.feature-card .icon{font-size:28px}
-.feature-card b{font-size:13px;color:var(--text)}
-.feature-card span{font-size:12px;color:var(--text3);text-align:center}
-.start-btn{background:linear-gradient(135deg,var(--pink),var(--pink2));border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:17px;font-weight:800;padding:16px 40px;border-radius:50px;cursor:pointer;box-shadow:0 6px 20px rgba(244,114,168,.4);transition:transform .15s,box-shadow .15s;width:100%;max-width:320px;margin:8px auto;display:block}
-.start-btn:active{transform:scale(.97)}
-.cal-btn{background:linear-gradient(135deg,var(--mint),var(--mint2));border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;padding:12px 32px;border-radius:50px;cursor:pointer;box-shadow:0 4px 14px rgba(77,182,160,.3);width:100%;max-width:320px;margin:4px auto;display:block}
+/* HOME */
+.hw{padding:28px 20px 40px;max-width:500px;margin:0 auto;text-align:center}
+.htitle{font-family:'Pacifico',cursive;font-size:34px;color:var(--pink2);line-height:1.2;margin-bottom:10px}
+.hsub{font-size:14px;color:var(--text2);line-height:1.8;margin-bottom:24px}
+.illus{font-size:54px;display:block;margin:14px 0;animation:bob 2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 0}
+.fc{background:var(--white);border:2px solid var(--pink3);border-radius:var(--r2);padding:16px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:var(--shadow2)}
+.fc .fi{font-size:26px}.fc b{font-size:12px}.fc span{font-size:11px;color:var(--text3);text-align:center}
+.sbtn{background:linear-gradient(135deg,var(--pink),var(--pink2));border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;padding:15px 36px;border-radius:50px;cursor:pointer;box-shadow:0 6px 18px rgba(244,114,168,.38);width:100%;max-width:300px;margin:8px auto;display:block}
+.gbtn{background:linear-gradient(135deg,var(--mint),var(--mint2));border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;padding:12px 28px;border-radius:50px;cursor:pointer;width:100%;max-width:300px;margin:4px auto;display:block}
 
-/* ── MAKER ── */
-.maker-wrap{padding:20px 16px 40px;max-width:500px;margin:0 auto}
-.section-title{font-size:20px;font-weight:900;color:var(--pink2);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+/* MAKER */
+.mw{padding:18px 16px 40px;max-width:500px;margin:0 auto}
+.stitle{font-size:19px;font-weight:900;color:var(--pink2);margin-bottom:14px}
 
-/* api key bar */
-.api-bar{background:var(--white);border:2px solid var(--yellow);border-radius:var(--radius2);padding:12px 14px;margin-bottom:16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.api-bar .key-label{font-size:13px;font-weight:700;color:var(--yellow2);flex-shrink:0}
-.api-input{flex:1;min-width:140px;border:2px solid var(--yellow);border-radius:20px;padding:6px 12px;font-size:13px;font-family:'Nunito',sans-serif;outline:none;background:var(--cream)}
-.api-save-btn{background:var(--yellow);border:none;border-radius:20px;padding:6px 14px;font-size:13px;font-weight:700;font-family:'Nunito',sans-serif;cursor:pointer;white-space:nowrap}
-.api-hint{font-size:11px;color:var(--text3);width:100%}
-.api-hint a{color:var(--pink2)}
+/* AI model notice */
+.ai-notice{background:linear-gradient(135deg,#fff8e1,#fce4ec);border:2px solid var(--yellow);border-radius:var(--r2);padding:11px 14px;margin-bottom:14px;font-size:12px;color:var(--text2);line-height:1.6}
+.ai-notice b{color:var(--yellow2)}
 
 /* drop zone */
-.drop-zone{border:3px dashed var(--pink);border-radius:var(--radius);padding:36px 20px;text-align:center;cursor:pointer;background:var(--white);transition:all .2s;margin-bottom:16px;position:relative;overflow:hidden}
-.drop-zone:before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--pink3)55%,var(--sky)100%);opacity:.3}
-.drop-zone.drag{border-color:var(--pink2);background:var(--pink3)}
-.drop-icon{font-size:44px;display:block;margin-bottom:10px;position:relative}
-.drop-text{font-size:16px;font-weight:800;color:var(--pink2);position:relative;margin-bottom:4px}
-.drop-hint{font-size:12px;color:var(--text3);position:relative}
+.dz{border:3px dashed var(--pink);border-radius:var(--r);padding:34px 20px;text-align:center;cursor:pointer;background:var(--white);transition:all .2s;margin-bottom:14px;position:relative;overflow:hidden}
+.dz:before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--pink3)50%,var(--sky));opacity:.25}
+.dz.drag{border-color:var(--pink2);background:var(--pink3)}
+.dz-icon{font-size:42px;display:block;margin-bottom:8px;position:relative}
+.dz-text{font-size:15px;font-weight:800;color:var(--pink2);position:relative;margin-bottom:3px}
+.dz-hint{font-size:11px;color:var(--text3);position:relative}
 
 /* studio */
-.studio{gap:12px;align-items:flex-start;margin-bottom:16px;flex-wrap:wrap}
-.studio.visible{display:flex}
-.preview-box{flex:1;min-width:120px;max-width:calc(50% - 30px)}
-.preview-label{font-size:12px;font-weight:700;color:var(--text3);margin-bottom:6px;text-align:center}
-.preview-img{width:100%;height:180px;border-radius:var(--radius2);object-fit:contain;background:var(--cream);border:2px solid var(--pink3);display:block}
-.arrow-col{font-size:22px;color:var(--pink);align-self:center;flex-shrink:0;padding-top:20px}
-.sticker-canvas{width:100%;min-height:160px;border-radius:var(--radius2);background:repeating-conic-gradient(#f0ece8 0% 25%,var(--white) 0% 50%) 0 0/20px 20px;border:2px solid var(--pink3);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
-.sticker-preview-img{max-width:100%;max-height:200px;object-fit:contain;transition:filter .3s}
-.spinner-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;padding:20px}
-.spinner{width:36px;height:36px;border:3px solid var(--pink3);border-top:3px solid var(--pink2);border-radius:50%;animation:spin .7s linear infinite}
+.studio{display:flex;gap:10px;align-items:flex-start;margin-bottom:14px;flex-wrap:wrap}
+.pbox{flex:1;min-width:110px;max-width:calc(50% - 22px)}
+.plabel{font-size:11px;font-weight:700;color:var(--text3);margin-bottom:5px;text-align:center}
+.pimg{width:100%;height:170px;border-radius:var(--r2);object-fit:contain;background:var(--cream);border:2px solid var(--pink3);display:block}
+.arr{font-size:20px;color:var(--pink);align-self:center;flex-shrink:0;margin-top:18px}
+.sc{width:100%;min-height:150px;border-radius:var(--r2);background:repeating-conic-gradient(#f0ece8 0% 25%,#fff 0% 50%) 0 0/18px 18px;border:2px solid var(--pink3);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.sp-wrap{display:flex;flex-direction:column;align-items:center;gap:9px;padding:20px}
+.sp{width:34px;height:34px;border:3px solid var(--pink3);border-top:3px solid var(--pink2);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.spinner-text{font-size:12px;color:var(--text2);text-align:center;font-weight:700}
+.sp-text{font-size:11px;color:var(--text2);text-align:center;font-weight:700;max-width:160px;line-height:1.5}
+.sp-bar{width:140px;height:6px;background:var(--pink3);border-radius:10px;overflow:hidden}
+.sp-fill{height:100%;background:linear-gradient(90deg,var(--pink),var(--pink2));border-radius:10px;transition:width .4s ease;width:0%}
+.simg{max-width:100%;max-height:190px;object-fit:contain;transition:filter .25s}
 
-/* effects */
-.effect-label{font-size:13px;font-weight:800;color:var(--text2);margin-bottom:8px}
-.effect-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
-.eff-btn{background:var(--white);border:2px solid var(--pink3);border-radius:20px;padding:7px 14px;font-size:13px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--text2);cursor:pointer;transition:all .15s}
-.eff-btn.active{background:var(--pink);border-color:var(--pink2);color:#fff}
+/* controls */
+.clabel{font-size:12px;font-weight:800;color:var(--text2);margin-bottom:7px;margin-top:12px}
+.erow{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:4px}
+.ebtn{background:var(--white);border:2px solid var(--pink3);border-radius:20px;padding:6px 13px;font-size:12px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--text2);cursor:pointer;transition:all .15s}
+.ebtn.on{background:var(--pink);border-color:var(--pink2);color:#fff}
+.bbtn{background:var(--white);border:2px solid var(--pink3);border-radius:20px;padding:6px 13px;font-size:12px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--text2);cursor:pointer;transition:all .15s}
+.bbtn.on{background:#c9b8e8;border-color:#9c7ed4;color:#fff}
+.szrow{display:flex;align-items:center;gap:10px;margin:10px 0}
+.szlabel{font-size:12px;font-weight:700;color:var(--text2);flex-shrink:0}
+input[type=range]{-webkit-appearance:none;height:5px;border-radius:10px;background:linear-gradient(90deg,var(--pink),var(--mint));outline:none;flex:1}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--pink2);cursor:pointer;box-shadow:0 2px 6px rgba(244,114,168,.4)}
+.arow{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.savebtn{flex:1;background:linear-gradient(135deg,var(--pink),var(--pink2));border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;padding:12px 14px;border-radius:28px;cursor:pointer;box-shadow:0 4px 12px rgba(244,114,168,.3)}
+.dlbtn{background:linear-gradient(135deg,var(--mint),var(--mint2));border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;padding:12px 14px;border-radius:28px;cursor:pointer;text-decoration:none;display:inline-block}
+.rstbtn{background:var(--white);border:2px solid var(--pink3);color:var(--text2);font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;padding:10px 13px;border-radius:28px;cursor:pointer}
 
-/* border style */
-.border-label{font-size:13px;font-weight:800;color:var(--text2);margin-bottom:8px}
-.border-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
-.bdr-btn{background:var(--white);border:2px solid var(--pink3);border-radius:20px;padding:7px 14px;font-size:12px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--text2);cursor:pointer;transition:all .15s}
-.bdr-btn.active{background:var(--lavender);border-color:var(--lavender2);color:#fff}
+/* CALENDAR */
+.cw{padding:18px 16px 40px;max-width:500px;margin:0 auto}
+.ch{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.ctitle{font-family:'Pacifico',cursive;font-size:19px;color:var(--pink2)}
+.cnav{background:var(--white);border:2px solid var(--pink3);color:var(--pink2);width:34px;height:34px;border-radius:50%;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:900}
+.cstats{display:flex;gap:8px;margin-bottom:13px;flex-wrap:wrap}
+.chip{background:var(--white);border:2px solid var(--pink3);border-radius:18px;padding:5px 13px;font-size:12px;font-weight:700;color:var(--text2)}
+.chip span{color:var(--pink2);font-size:14px}
+.cgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cdl{text-align:center;font-size:10px;font-weight:800;color:var(--text3);padding:3px 0}
+.cc{background:var(--white);border:2px solid var(--pink3);border-radius:10px;min-height:56px;display:flex;flex-direction:column;align-items:center;padding:3px 2px;gap:2px}
+.cc.today{border-color:var(--pink2);background:var(--pink3)}
+.cc.has{border-color:var(--mint2);background:linear-gradient(135deg,#f0fff8,#fff);cursor:pointer}
+.cc.has:active{transform:scale(.95)}
+.cdate{font-size:10px;font-weight:800;color:var(--text2)}
+.cc.today .cdate{color:var(--pink2)}
+.ctw{display:flex;flex-wrap:wrap;justify-content:center;gap:1px}
+.cth{width:26px;height:26px;object-fit:contain;border-radius:3px}
+.cmore{font-size:8px;font-weight:800;color:var(--mint2)}
+.chint{text-align:center;font-size:11px;color:var(--text3);margin-top:10px}
 
-/* sticker size */
-.size-row{display:flex;align-items:center;gap:10px;margin-bottom:16px}
-.size-label{font-size:13px;font-weight:700;color:var(--text2);flex-shrink:0}
-input[type=range]{-webkit-appearance:none;height:6px;border-radius:10px;background:linear-gradient(90deg,var(--pink),var(--mint));outline:none;flex:1}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--pink2);cursor:pointer;box-shadow:0 2px 8px rgba(244,114,168,.4)}
+/* DAY */
+.dw{padding:18px 16px 40px;max-width:500px;margin:0 auto}
+.backbtn{background:none;border:none;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--pink2);cursor:pointer;padding:0;margin-bottom:14px;display:flex;align-items:center;gap:5px}
+.dtitle{font-size:19px;font-weight:900;color:var(--text);margin-bottom:18px}
+.dgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.dcard{background:var(--white);border:2px solid var(--pink3);border-radius:var(--r2);padding:10px;display:flex;flex-direction:column;align-items:center;gap:8px;box-shadow:var(--shadow2)}
+.dimg{width:100%;max-height:140px;object-fit:contain}
+.dbtns{display:flex;gap:5px;width:100%}
+.ddl{flex:1;background:var(--mint);border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:11px;font-weight:700;padding:7px;border-radius:18px;cursor:pointer;text-align:center;text-decoration:none;display:block}
+.ddel{background:var(--peach);border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:11px;font-weight:700;padding:7px 10px;border-radius:18px;cursor:pointer}
 
-/* action btns */
-.action-row{display:flex;gap:10px;flex-wrap:wrap}
-.save-btn{flex:1;background:linear-gradient(135deg,var(--pink),var(--pink2));border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;padding:13px 16px;border-radius:30px;cursor:pointer;box-shadow:0 4px 14px rgba(244,114,168,.35)}
-.dl-btn{background:linear-gradient(135deg,var(--mint),var(--mint2));border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;padding:13px 16px;border-radius:30px;cursor:pointer;text-decoration:none;display:inline-block}
-.reset-btn{background:var(--white);border:2px solid var(--pink3);color:var(--text2);font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;padding:11px 14px;border-radius:30px;cursor:pointer}
-
-/* ── CALENDAR ── */
-.cal-wrap{padding:20px 16px 40px;max-width:500px;margin:0 auto}
-.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-.cal-title{font-family:'Pacifico',cursive;font-size:20px;color:var(--pink2)}
-.cal-nav{background:var(--white);border:2px solid var(--pink3);color:var(--pink2);width:36px;height:36px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:900}
-.cal-nav:active{background:var(--pink3)}
-.cal-stats{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
-.stat-chip{background:var(--white);border:2px solid var(--pink3);border-radius:20px;padding:6px 14px;font-size:12px;font-weight:700;color:var(--text2)}
-.stat-chip span{color:var(--pink2);font-size:15px}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
-.cal-day-label{text-align:center;font-size:11px;font-weight:800;color:var(--text3);padding:4px 0}
-.cal-cell{background:var(--white);border:2px solid var(--pink3);border-radius:12px;min-height:60px;display:flex;flex-direction:column;align-items:center;padding:4px 2px;gap:2px;transition:all .15s}
-.cal-cell.today{border-color:var(--pink2);background:var(--pink3)}
-.cal-cell.has-sticker{border-color:var(--mint2);background:linear-gradient(135deg,#f0fff8,#fff);cursor:pointer}
-.cal-cell.has-sticker:active{transform:scale(.96)}
-.cal-date{font-size:11px;font-weight:800;color:var(--text2)}
-.cal-cell.today .cal-date{color:var(--pink2)}
-.cal-thumb-wrap{display:flex;flex-wrap:wrap;justify-content:center;gap:1px}
-.cal-thumb{width:28px;height:28px;object-fit:contain;border-radius:4px}
-.cal-more{font-size:9px;font-weight:800;color:var(--mint2)}
-.cal-hint{text-align:center;font-size:12px;color:var(--text3);margin-top:12px}
-
-/* ── DAY DETAIL ── */
-.day-wrap{padding:20px 16px 40px;max-width:500px;margin:0 auto}
-.back-btn{background:none;border:none;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--pink2);cursor:pointer;padding:0;margin-bottom:16px;display:flex;align-items:center;gap:6px}
-.day-title{font-size:20px;font-weight:900;color:var(--text);margin-bottom:20px}
-.day-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-.day-card{background:var(--white);border:2px solid var(--pink3);border-radius:var(--radius2);padding:12px;display:flex;flex-direction:column;align-items:center;gap:10px;box-shadow:var(--shadow2)}
-.day-img{width:100%;max-height:150px;object-fit:contain}
-.day-card-actions{display:flex;gap:6px;width:100%}
-.day-dl{flex:1;background:var(--mint);border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;padding:8px;border-radius:20px;cursor:pointer;text-align:center;text-decoration:none;display:block}
-.day-del{background:var(--peach);border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;padding:8px 12px;border-radius:20px;cursor:pointer}
-
-/* ── TOAST ── */
-.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(80px);background:linear-gradient(135deg,var(--pink),var(--pink2));color:#fff;font-size:14px;font-weight:700;padding:12px 24px;border-radius:30px;box-shadow:0 6px 20px rgba(244,114,168,.4);z-index:9999;transition:transform .3s ease;pointer-events:none;white-space:nowrap}
+/* TOAST */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(70px);background:linear-gradient(135deg,var(--pink),var(--pink2));color:#fff;font-size:13px;font-weight:700;padding:11px 22px;border-radius:28px;box-shadow:0 5px 18px rgba(244,114,168,.4);z-index:9999;transition:transform .3s;pointer-events:none;white-space:nowrap}
 .toast.show{transform:translateX(-50%) translateY(0)}
 
-/* ── CONFIRM MODAL ── */
-.overlay{position:fixed;inset:0;background:rgba(90,62,75,.35);z-index:500;display:none;align-items:center;justify-content:center}
-.overlay.open{display:flex}
-.modal{background:var(--white);border:3px solid var(--pink3);border-radius:var(--radius);padding:28px 24px;max-width:320px;width:90%;text-align:center;box-shadow:var(--shadow)}
-.modal-title{font-size:18px;font-weight:900;color:var(--text);margin-bottom:10px}
-.modal-body{font-size:14px;color:var(--text2);margin-bottom:20px;line-height:1.6}
-.modal-img{max-width:100px;max-height:100px;object-fit:contain;margin:0 auto 14px;display:block}
-.modal-btns{display:flex;gap:10px;justify-content:center}
-.modal-confirm{background:var(--peach2);border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;padding:11px 24px;border-radius:30px;cursor:pointer}
-.modal-cancel{background:var(--white);border:2px solid var(--pink3);color:var(--text2);font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;padding:11px 24px;border-radius:30px;cursor:pointer}
+/* DELETE MODAL */
+.ov{position:fixed;inset:0;background:rgba(90,62,75,.35);z-index:500;display:none;align-items:center;justify-content:center}
+.ov.open{display:flex}
+.modal{background:var(--white);border:3px solid var(--pink3);border-radius:var(--r);padding:24px 20px;max-width:300px;width:90%;text-align:center;box-shadow:var(--shadow)}
+.modal img{max-width:90px;max-height:90px;object-fit:contain;margin:0 auto 12px;display:block}
+.modal h3{font-size:16px;font-weight:900;margin-bottom:8px}
+.modal p{font-size:13px;color:var(--text2);margin-bottom:16px;line-height:1.5}
+.mbtns{display:flex;gap:8px;justify-content:center}
+.mconf{background:var(--peach2);border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;padding:10px 22px;border-radius:28px;cursor:pointer}
+.mcanc{background:var(--white);border:2px solid var(--pink3);color:var(--text2);font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;padding:10px 22px;border-radius:28px;cursor:pointer}
 
-/* scrollbar */
-::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar{width:5px}
 ::-webkit-scrollbar-thumb{background:var(--pink);border-radius:10px}
-
-/* responsive */
-@media(max-width:360px){
-  .nav-logo{font-size:18px}
-  .tab-btn{padding:6px 10px;font-size:12px}
-  .home-title{font-size:28px}
-}
 </style>
 </head>
 <body>
 
-<!-- Floating petals -->
-<div class="petals-bg" id="petalsContainer"></div>
+<div class="petals-bg" id="petals"></div>
 
-<!-- NAV -->
 <nav class="nav">
-  <div class="nav-logo"><span>🌸</span> StickerMe</div>
-  <div class="nav-tabs">
-    <button class="tab-btn active" onclick="showPage('home')">首頁</button>
-    <button class="tab-btn" onclick="showPage('maker')">製作</button>
-    <button class="tab-btn" onclick="showPage('calendar')">月曆</button>
+  <div class="logo">🌸 StickerMe</div>
+  <div class="tabs">
+    <button class="tb on" onclick="go('home')">首頁</button>
+    <button class="tb" onclick="go('maker')">製作</button>
+    <button class="tb" onclick="go('cal')">月曆</button>
   </div>
 </nav>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<!-- DELETE CONFIRM MODAL -->
-<div class="overlay" id="deleteOverlay">
+<div class="ov" id="delOv">
   <div class="modal">
-    <img id="deletePreviewImg" class="modal-img" src="" alt=""/>
-    <div class="modal-title">🗑️ 刪除貼紙？</div>
-    <div class="modal-body">這個貼紙刪除後就找不回來囉！</div>
-    <div class="modal-btns">
-      <button class="modal-confirm" id="deleteConfirmBtn">刪除</button>
-      <button class="modal-cancel" onclick="closeDeleteModal()">取消</button>
+    <img id="delImg" src="" alt=""/>
+    <h3>🗑️ 刪除貼紙？</h3>
+    <p>這個貼紙刪除後就找不回來囉！</p>
+    <div class="mbtns">
+      <button class="mconf" id="delConfBtn">刪除</button>
+      <button class="mcanc" onclick="closeDelModal()">取消</button>
     </div>
   </div>
 </div>
 
-<!-- ══════ HOME PAGE ══════ -->
-<div class="page active" id="page-home">
-  <div class="home-wrap">
-    <div class="home-hero">
-      <span class="home-illus">🌸</span>
-      <h1 class="home-title">StickerMe！</h1>
-      <p class="home-subtitle">上傳照片，AI 智慧摳圖<br/>做成專屬可愛貼紙，存入春日月曆 🌷</p>
-    </div>
-    <button class="start-btn" onclick="showPage('maker');document.getElementById('fileInput').click()">📸 上傳照片，開始製作！</button>
-    <button class="cal-btn" onclick="showPage('calendar')">🗓 查看我的貼紙月曆</button>
-    <div class="feature-grid">
-      <div class="feature-card"><span class="icon">🤖</span><b>AI 智慧摳圖</b><span>自動去背，輪廓清晰</span></div>
-      <div class="feature-card"><span class="icon">✨</span><b>8 種效果</b><span>白邊、發光、彩虹…</span></div>
-      <div class="feature-card"><span class="icon">💾</span><b>永久儲存</b><span>關掉重開都還在</span></div>
-      <div class="feature-card"><span class="icon">🌸</span><b>春日月曆</b><span>每天貼紙一目了然</span></div>
+<!-- HOME -->
+<div class="pg on" id="pg-home">
+  <div class="hw">
+    <span class="illus">🌸</span>
+    <h1 class="htitle">StickerMe！</h1>
+    <p class="hsub">上傳照片 → AI 智慧摳圖 → 做成貼紙<br/>存入春日月曆，永久不消失 🌷</p>
+    <button class="sbtn" onclick="go('maker');document.getElementById('fi').click()">📸 上傳照片開始製作</button>
+    <button class="gbtn" onclick="go('cal')">🗓 查看我的貼紙月曆</button>
+    <div class="fg">
+      <div class="fc"><span class="fi">🤖</span><b>AI 摳圖</b><span>本機執行，不需 API</span></div>
+      <div class="fc"><span class="fi">✨</span><b>8 種效果</b><span>白邊、發光、彩虹…</span></div>
+      <div class="fc"><span class="fi">💾</span><b>永久儲存</b><span>關掉重開都還在</span></div>
+      <div class="fc"><span class="fi">🌸</span><b>春日月曆</b><span>每天一目了然</span></div>
     </div>
   </div>
 </div>
 
-<!-- ══════ MAKER PAGE ══════ -->
-<div class="page" id="page-maker">
-  <div class="maker-wrap">
-    <div class="section-title">🎨 貼紙製作</div>
-
-    <!-- API Key -->
-    <div class="api-bar">
-      <span class="key-label">🔑 remove.bg</span>
-      <input class="api-input" id="apiKeyInput" type="text" placeholder="API Key（選填）"/>
-      <button class="api-save-btn" onclick="saveApiKey()">儲存</button>
-      <span class="api-hint">不填也能用本機摳圖．<a href="https://www.remove.bg/zh/dashboard#api-key" target="_blank">免費申請 API Key →</a> 每月50次高品質摳圖</span>
+<!-- MAKER -->
+<div class="pg" id="pg-maker">
+  <div class="mw">
+    <div class="stitle">🎨 貼紙製作</div>
+    <div class="ai-notice">
+      🔑 <b>設定 remove.bg API Key</b>（每月免費 50 次高品質 AI 摳圖）<br/>
+      <a href="https://www.remove.bg/zh/dashboard#api-key" target="_blank" style="color:var(--pink2)">免費申請 API Key →</a>
+      <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
+        <input id="apiKeyInput" type="password" placeholder="貼上你的 API Key…"
+          style="flex:1;min-width:160px;border:2px solid var(--yellow);border-radius:18px;padding:6px 12px;font-size:12px;font-family:Nunito,sans-serif;outline:none;background:var(--cream)"/>
+        <input id="workerInput" type="text" placeholder="你的 Cloudflare Worker 網址"
+          style="flex:1;min-width:160px;border:2px solid var(--pink);border-radius:18px;padding:6px 12px;font-size:12px;font-family:Nunito,sans-serif;outline:none;background:var(--cream)"/>
+        <button onclick="saveSettings()" style="background:var(--yellow);border:none;border-radius:18px;padding:6px 14px;font-size:12px;font-weight:700;font-family:Nunito,sans-serif;cursor:pointer;white-space:nowrap">儲存</button>
+      </div>
+      <div style="font-size:10px;color:var(--text3);margin-top:5px">沒有設定也能用，系統會自動改用本機備用摳圖</div>
     </div>
-
-    <!-- Drop zone -->
-    <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()"
+    <div class="dz" id="dz"
+         onclick="document.getElementById('fi').click()"
          ondragover="event.preventDefault();this.classList.add('drag')"
          ondragleave="this.classList.remove('drag')"
          ondrop="onDrop(event)">
-      <span class="drop-icon">🖼️</span>
-      <p class="drop-text">點擊或拖曳照片到這裡</p>
-      <span class="drop-hint">支援 JPG · PNG · WEBP</span>
+      <span class="dz-icon">🖼️</span>
+      <p class="dz-text">點擊或拖曳照片到這裡</p>
+      <span class="dz-hint">支援 JPG · PNG · WEBP</span>
     </div>
-    <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleFile(this.files[0])"/>
+    <input type="file" id="fi" accept="image/*" style="display:none" onchange="handleFile(this.files[0])"/>
 
-    <!-- Studio -->
     <div class="studio" id="studio" style="display:none">
-      <div class="preview-box">
-        <div class="preview-label">原圖</div>
-        <img class="preview-img" id="originalImg" src="" alt=""/>
+      <div class="pbox">
+        <div class="plabel">原圖</div>
+        <img class="pimg" id="origImg" src="" alt=""/>
       </div>
-      <div class="arrow-col">→</div>
-      <div class="preview-box">
-        <div class="preview-label">貼紙預覽</div>
-        <div class="sticker-canvas" id="stickerCanvas">
-          <div class="spinner-wrap" id="spinnerWrap">
-            <div class="spinner"></div>
-            <p class="spinner-text" id="spinnerText">AI 摳圖中…</p>
+      <div class="arr">→</div>
+      <div class="pbox">
+        <div class="plabel">貼紙預覽</div>
+        <div class="sc" id="sc">
+          <div class="sp-wrap" id="spWrap">
+            <div class="sp"></div>
+            <p class="sp-text" id="spText">摳圖處理中…</p>
+            <div class="sp-bar"><div class="sp-fill" id="spFill"></div></div>
           </div>
-          <img class="sticker-preview-img" id="stickerImg" src="" alt="" style="display:none"/>
+          <img class="simg" id="simg" src="" alt="" style="display:none"/>
         </div>
       </div>
     </div>
 
-    <!-- Controls (shown after sticker ready) -->
     <div id="controls" style="display:none">
-
-      <!-- Effects -->
-      <div class="effect-label">✨ 濾鏡效果</div>
-      <div class="effect-row" id="effectRow"></div>
-
-      <!-- Border style -->
-      <div class="border-label">💫 貼紙邊框</div>
-      <div class="border-row" id="borderRow"></div>
-
-      <!-- Size -->
-      <div class="size-row">
-        <span class="size-label">📐 大小</span>
-        <input type="range" id="sizeRange" min="50" max="200" value="100" oninput="updateSize(this.value)"/>
-        <span id="sizeVal" style="font-size:12px;color:var(--text3);width:36px">100%</span>
+      <div class="clabel">✨ 濾鏡效果</div>
+      <div class="erow" id="erow"></div>
+      <div class="clabel">💫 貼紙邊框</div>
+      <div class="erow" id="brow"></div>
+      <div class="szrow">
+        <span class="szlabel">📐 大小</span>
+        <input type="range" id="szr" min="40" max="200" value="100" oninput="onSize(this.value)"/>
+        <span id="szv" style="font-size:11px;color:var(--text3);width:34px">100%</span>
       </div>
-
-      <!-- Actions -->
-      <div class="action-row">
-        <button class="save-btn" onclick="saveSticker()">💾 存到今天月曆</button>
-        <a class="dl-btn" id="dlBtn" href="#" download="sticker.png">⬇ 下載</a>
-        <button class="reset-btn" onclick="resetMaker()">🔄</button>
+      <div class="arow">
+        <button class="savebtn" onclick="saveSticker()">💾 存到今天月曆</button>
+        <a class="dlbtn" id="dlbtn" href="#" download="sticker.png">⬇ 下載</a>
+        <button class="rstbtn" onclick="resetMaker()">🔄</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══════ CALENDAR PAGE ══════ -->
-<div class="page" id="page-calendar">
-  <div class="cal-wrap">
-    <div class="cal-header">
-      <button class="cal-nav" onclick="changeMonth(-1)">‹</button>
-      <div class="cal-title" id="calTitle"></div>
-      <button class="cal-nav" onclick="changeMonth(1)">›</button>
+<!-- CALENDAR -->
+<div class="pg" id="pg-cal">
+  <div class="cw">
+    <div class="ch">
+      <button class="cnav" onclick="chMon(-1)">‹</button>
+      <div class="ctitle" id="ctitle"></div>
+      <button class="cnav" onclick="chMon(1)">›</button>
     </div>
-    <div class="cal-stats" id="calStats"></div>
-    <div class="cal-grid" id="calGrid"></div>
-    <p class="cal-hint">🌸 點擊有貼紙的日期查看詳情</p>
+    <div class="cstats" id="cstats"></div>
+    <div class="cgrid" id="cgrid"></div>
+    <p class="chint">🌸 點擊有貼紙的日期查看詳情</p>
   </div>
 </div>
 
-<!-- ══════ DAY DETAIL PAGE ══════ -->
-<div class="page" id="page-day">
-  <div class="day-wrap">
-    <button class="back-btn" onclick="showPage('calendar')">← 返回月曆</button>
-    <div class="day-title" id="dayTitle"></div>
-    <div class="day-grid" id="dayGrid"></div>
+<!-- DAY DETAIL -->
+<div class="pg" id="pg-day">
+  <div class="dw">
+    <button class="backbtn" onclick="go('cal')">← 返回月曆</button>
+    <div class="dtitle" id="dtitle"></div>
+    <div class="dgrid" id="dgrid"></div>
   </div>
 </div>
 
 <script>
-// ── Constants ──────────────────────────────────────────────────────────────
-const STORAGE_KEY = 'stickerme_v2';
-const API_KEY_STORAGE = 'stickerme_apikey';
-const MONTHS_ZH = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
-const DAYS_ZH = ['日','一','二','三','四','五','六'];
 
+const STORAGE_KEY = 'stickerme_v3';
+const MONTHS = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+const DAYS = ['日','一','二','三','四','五','六'];
 const EFFECTS = [
-  {id:'none',label:'原版',filter:''},
-  {id:'outline',label:'白邊',filter:'drop-shadow(0 0 5px #fff) drop-shadow(0 0 3px #fff) drop-shadow(0 0 8px #fff)'},
-  {id:'pink-glow',label:'粉光',filter:'drop-shadow(0 0 8px #f472a8) drop-shadow(0 0 16px #f9a8c9)'},
-  {id:'rainbow',label:'彩虹',filter:'hue-rotate(0deg) saturate(1.8)'},
-  {id:'vintage',label:'復古',filter:'sepia(0.6) contrast(1.1) brightness(1.05)'},
-  {id:'mint',label:'清新',filter:'hue-rotate(150deg) saturate(1.3) brightness(1.1)'},
-  {id:'warm',label:'暖陽',filter:'sepia(0.3) saturate(1.5) hue-rotate(330deg) brightness(1.1)'},
-  {id:'dreamy',label:'夢幻',filter:'brightness(1.1) saturate(1.4) contrast(0.9) blur(0.3px)'},
+  {id:'none',label:'原版',f:''},
+  {id:'outline',label:'白邊',f:'drop-shadow(0 0 5px #fff) drop-shadow(0 0 3px #fff) drop-shadow(0 0 9px #fff)'},
+  {id:'pink',label:'粉光',f:'drop-shadow(0 0 8px #f472a8) drop-shadow(0 0 16px #f9a8c9)'},
+  {id:'rainbow',label:'彩虹',f:'hue-rotate(0deg) saturate(1.8)'},
+  {id:'vintage',label:'復古',f:'sepia(0.6) contrast(1.1) brightness(1.05)'},
+  {id:'mint',label:'清新',f:'hue-rotate(150deg) saturate(1.3) brightness(1.1)'},
+  {id:'warm',label:'暖陽',f:'sepia(0.3) saturate(1.5) hue-rotate(330deg) brightness(1.1)'},
+  {id:'dreamy',label:'夢幻',f:'brightness(1.1) saturate(1.3) contrast(0.9)'},
 ];
-
 const BORDERS = [
-  {id:'none',label:'無邊框',css:''},
-  {id:'white',label:'🤍 白邊',css:'0 0 0 4px #fff, 0 0 0 6px #fce4ec'},
-  {id:'pink',label:'🩷 粉邊',css:'0 0 0 4px #f9a8c9, 0 0 0 7px #fce4ec'},
-  {id:'mint',label:'💚 薄荷',css:'0 0 0 4px #a8e6cf, 0 0 0 7px #f0fff8'},
-  {id:'yellow',label:'💛 檸檬',css:'0 0 0 4px #ffd966, 0 0 0 7px #fffde7'},
-  {id:'rainbow',label:'🌈 彩虹',css:'0 0 0 4px transparent'},
+  {id:'none',label:'無邊框',s:''},
+  {id:'white',label:'🤍 白邊',s:'0 0 0 5px #fff,0 0 0 7px #fce4ec'},
+  {id:'pink',label:'🩷 粉邊',s:'0 0 0 5px #f9a8c9,0 0 0 8px #fce4ec'},
+  {id:'mint',label:'💚 薄荷',s:'0 0 0 5px #a8e6cf,0 0 0 8px #f0fff8'},
+  {id:'yellow',label:'💛 檸檬',s:'0 0 0 5px #ffd966,0 0 0 8px #fffde7'},
 ];
 
-// ── State ──────────────────────────────────────────────────────────────────
 let stickerData = {};
 let calYear = new Date().getFullYear();
 let calMonth = new Date().getMonth();
-let currentEffect = 'none';
-let currentBorder = 'none';
-let currentStickerDataUrl = null;
-let originalFile = null;
-let deleteTarget = null; // {dateKey, index}
+let curEffect = 'none';
+let curBorder = 'none';
+let curDataUrl = null;
+let delTarget = null;
 
-// ── Init ───────────────────────────────────────────────────────────────────
-(function init(){
-  generatePetals();
-  loadData();
-  const savedKey = localStorage.getItem(API_KEY_STORAGE);
-  if(savedKey) document.getElementById('apiKeyInput').value = savedKey;
-  buildEffectRow();
-  buildBorderRow();
-  renderCalendar();
-})();
+// init
+loadData();
+loadSettings();
+buildEffectRow();
+buildBorderRow();
+renderCal();
+genPetals();
 
-function generatePetals(){
-  const emojis = ['🌸','🌷','🌺','🌼','🌻','🍀','🌿','✿'];
-  const container = document.getElementById('petalsContainer');
-  for(let i=0;i<18;i++){
-    const el = document.createElement('div');
-    el.className='petal';
-    el.textContent=emojis[Math.floor(Math.random()*emojis.length)];
-    el.style.left=Math.random()*100+'%';
-    el.style.animationDuration=(8+Math.random()*12)+'s';
-    el.style.animationDelay=(-Math.random()*15)+'s';
-    el.style.fontSize=(12+Math.random()*16)+'px';
-    container.appendChild(el);
-  }
-}
-
-// ── Storage ────────────────────────────────────────────────────────────────
+// ── storage ──
 function loadData(){
-  try{
-    const raw = localStorage.getItem(STORAGE_KEY);
-    stickerData = raw ? JSON.parse(raw) : {};
-  }catch(e){ stickerData={}; }
+  try{ stickerData = JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}'); }catch{ stickerData={}; }
+}
+function saveData(){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(stickerData)); }
+  catch(e){ if(e.name==='QuotaExceededError') toast('⚠️ 儲存空間不足'); }
 }
 
-function saveData(){
-  try{
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(stickerData));
-  }catch(e){
-    if(e.name==='QuotaExceededError'){
-      showToast('⚠️ 儲存空間不足，請刪除一些舊貼紙');
-    }
+function loadSettings(){
+  const k=localStorage.getItem('sm_apikey')||'';
+  const w=localStorage.getItem('sm_worker')||'';
+  if(k) document.getElementById('apiKeyInput').value=k;
+  if(w) document.getElementById('workerInput').value=w;
+}
+
+window.saveSettings=function(){
+  const k=document.getElementById('apiKeyInput').value.trim();
+  const w=document.getElementById('workerInput').value.trim();
+  localStorage.setItem('sm_apikey',k);
+  localStorage.setItem('sm_worker',w);
+  toast('✅ 設定已儲存！');
+};
+
+// ── nav ──
+window.go = function(name){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tb').forEach(b=>b.classList.remove('on'));
+  document.getElementById('pg-'+name).classList.add('on');
+  const i={home:0,maker:1,cal:2,day:2};
+  document.querySelectorAll('.tb')[i[name]]?.classList.add('on');
+  if(name==='cal') renderCal();
+  window.scrollTo(0,0);
+};
+
+// ── petals ──
+function genPetals(){
+  const c=document.getElementById('petals');
+  const e=['🌸','🌷','🌺','🌼','🍀'];
+  for(let i=0;i<16;i++){
+    const d=document.createElement('div');
+    d.className='petal';
+    d.textContent=e[i%e.length];
+    d.style.cssText=`left:${Math.random()*100}%;font-size:${12+Math.random()*14}px;animation-duration:${9+Math.random()*11}s;animation-delay:${-Math.random()*14}s`;
+    c.appendChild(d);
   }
 }
 
-// ── Navigation ─────────────────────────────────────────────────────────────
-function showPage(name){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('page-'+name).classList.add('active');
-  const idx = {home:0,maker:1,calendar:2,day:2};
-  const tabs = document.querySelectorAll('.tab-btn');
-  if(tabs[idx[name]]) tabs[idx[name]].classList.add('active');
-  if(name==='calendar') renderCalendar();
-  window.scrollTo(0,0);
-}
-
-// ── API Key ────────────────────────────────────────────────────────────────
-function saveApiKey(){
-  const v = document.getElementById('apiKeyInput').value.trim();
-  localStorage.setItem(API_KEY_STORAGE, v);
-  showToast(v ? '🔑 API Key 已儲存！' : '🔑 已清除 API Key');
-}
-
-// ── File handling ──────────────────────────────────────────────────────────
-function onDrop(e){
-  e.preventDefault();
-  e.currentTarget.classList.remove('drag');
-  const file = e.dataTransfer.files[0];
-  if(file && file.type.startsWith('image/')) handleFile(file);
-}
+// ── file ──
+window.onDrop = function(e){
+  e.preventDefault(); e.currentTarget.classList.remove('drag');
+  const f=e.dataTransfer.files[0];
+  if(f&&f.type.startsWith('image/')) handleFile(f);
+};
 
 async function handleFile(file){
   if(!file) return;
-  originalFile = file;
-
-  // Read file as data URL so it displays reliably (avoids blob URL issues)
-  const originalUrl = await new Promise((res,rej)=>{
-    const r = new FileReader();
-    r.onload = ()=>res(r.result);
-    r.onerror = ()=>rej(r.error);
-    r.readAsDataURL(file);
-  });
-
-  const origImg = document.getElementById('originalImg');
-  origImg.src = originalUrl;
-  origImg.style.display = 'block';
-
-  document.getElementById('dropZone').style.display='none';
-  const studio = document.getElementById('studio');
-  studio.style.display='flex';
+  const url = await toDataURL(file);
+  document.getElementById('origImg').src = url;
+  document.getElementById('dz').style.display='none';
+  document.getElementById('studio').style.display='flex';
   document.getElementById('controls').style.display='none';
-  document.getElementById('stickerImg').style.display='none';
-  document.getElementById('spinnerWrap').style.display='flex';
-  currentStickerDataUrl = null;
-  currentEffect='none'; currentBorder='none';
-  updateEffectUI(); updateBorderUI();
-  document.getElementById('sizeRange').value=100;
-  document.getElementById('sizeVal').textContent='100%';
+  document.getElementById('simg').style.display='none';
+  document.getElementById('spWrap').style.display='flex';
+  curDataUrl=null; curEffect='none'; curBorder='none';
+  updateEffUI(); updateBdrUI();
+  document.getElementById('szr').value=100;
+  document.getElementById('szv').textContent='100%';
 
-  const apiKey = localStorage.getItem(API_KEY_STORAGE)||'';
-  let resultUrl = null;
+  const apiKey = localStorage.getItem('sm_apikey')||'';
+  const workerUrl = localStorage.getItem('sm_worker')||'';
 
-  if(apiKey){
+  if(apiKey && workerUrl){
     try{
-      document.getElementById('spinnerText').textContent='remove.bg AI 摳圖中…';
-      resultUrl = await removeBgAPI(file, apiKey);
-    }catch(err){
+      setProgress(10,'送出照片給 remove.bg…');
+      curDataUrl = await removeBgAPI(url, apiKey, workerUrl);
+      setProgress(100,'摳圖完成！✨');
+    } catch(err){
       console.warn('remove.bg failed:', err);
-      document.getElementById('spinnerText').textContent='備用本機摳圖中…';
-      resultUrl = await removeBgCanvas(originalUrl);
+      toast('⚠️ remove.bg 失敗，改用備用摳圖');
+      setProgress(50,'備用摳圖中…');
+      curDataUrl = await removeBgFallback(url);
+      setProgress(100,'完成！');
     }
   } else {
-    document.getElementById('spinnerText').textContent='本機智慧摳圖中…';
-    resultUrl = await removeBgCanvas(originalUrl);
+    setProgress(30,'本機備用摳圖中…');
+    curDataUrl = await removeBgFallback(url);
+    setProgress(100,'完成（建議設定 API Key 獲得更好效果）');
   }
 
-  currentStickerDataUrl = resultUrl;
-  const stickerImg = document.getElementById('stickerImg');
-  stickerImg.src = resultUrl;
-  stickerImg.style.display='block';
-  document.getElementById('spinnerWrap').style.display='none';
+  const simg=document.getElementById('simg');
+  simg.src=curDataUrl; simg.style.display='block';
+  document.getElementById('spWrap').style.display='none';
   document.getElementById('controls').style.display='block';
-  updateStickerAppearance();
-  updateDownloadLink();
+  updateAppearance();
+  updateDL();
 }
 
-async function removeBgAPI(file, apiKey){
-  // Use base64 JSON API to avoid FormData cross-origin issues
-  const base64 = await new Promise((res,rej)=>{
-    const r = new FileReader();
-    r.onload = ()=>res(r.result.split(',')[1]);
-    r.onerror = ()=>rej(r.error);
-    r.readAsDataURL(file);
-  });
-  const res = await fetch('https://api.remove.bg/v1.0/removebg',{
+// ── remove.bg via Cloudflare Worker ──
+async function removeBgAPI(dataUrl, apiKey, workerUrl){
+  const base64 = dataUrl.split(',')[1];
+  const res = await fetch(workerUrl, {
     method:'POST',
-    headers:{
-      'X-Api-Key': apiKey,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ image_file_b64: base64, size: 'auto', format: 'png' })
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ image_file_b64: base64, api_key: apiKey })
   });
   const json = await res.json();
-  if(!res.ok) throw new Error(json?.errors?.[0]?.title || 'remove.bg error ' + res.status);
+  if(!res.ok) throw new Error(json?.errors?.[0]?.title||json?.error||'error '+res.status);
   const b64 = json?.data?.result_b64;
   if(!b64) throw new Error('no result');
-  return 'data:image/png;base64,' + b64;
+  return 'data:image/png;base64,'+b64;
 }
 
-function removeBgCanvas(imgUrl){
-  return new Promise(resolve=>{
-    const img = new Image();
-    img.crossOrigin='anonymous';
-    img.onload=()=>{
-      const canvas=document.createElement('canvas');
-      canvas.width=img.naturalWidth; canvas.height=img.naturalHeight;
-      const ctx=canvas.getContext('2d');
-      ctx.drawImage(img,0,0);
-      const imgData=ctx.getImageData(0,0,canvas.width,canvas.height);
-      const d=imgData.data;
-      const w=canvas.width, h=canvas.height;
-      // flood-fill from corners
-      const visited=new Uint8Array(w*h);
-      const queue=[];
-      const tolerance=55;
-      const sampleCorners=()=>{
-        const pts=[[0,0],[w-1,0],[0,h-1],[w-1,h-1],[Math.floor(w/2),0],[0,Math.floor(h/2)]];
-        let r=0,g=0,b=0;
-        pts.forEach(([x,y])=>{const i=(y*w+x)*4;r+=d[i];g+=d[i+1];b+=d[i+2];});
-        return [Math.round(r/pts.length),Math.round(g/pts.length),Math.round(b/pts.length)];
-      };
-      const [br,bg,bb]=sampleCorners();
-      const isBackground=(idx)=>{
-        const dr=Math.abs(d[idx]-br),dg=Math.abs(d[idx+1]-bg),db=Math.abs(d[idx+2]-bb);
-        return dr+dg+db<tolerance*3;
-      };
-      [[0,0],[w-1,0],[0,h-1],[w-1,h-1]].forEach(([x,y])=>{
-        const idx=y*w+x;
-        if(!visited[idx] && isBackground(idx*4)){ queue.push(idx); visited[idx]=1; }
+function setProgress(pct, msg){
+  document.getElementById('spText').innerHTML = msg;
+  document.getElementById('spFill').style.width = pct+'%';
+}
+
+function toDataURL(file){
+  return new Promise((res,rej)=>{
+    const r=new FileReader(); r.onload=()=>res(r.result); r.onerror=()=>rej(r.error); r.readAsDataURL(file);
+  });
+}
+
+function loadImg(src){
+  return new Promise((res,rej)=>{
+    const i=new Image(); i.onload=()=>res(i); i.onerror=rej; i.src=src;
+  });
+}
+
+// ── Fallback BG removal (colour-based flood fill) ──
+function removeBgFallback(url){
+  return new Promise(async resolve=>{
+    const img=await loadImg(url);
+    const c=document.createElement('canvas');
+    c.width=img.naturalWidth; c.height=img.naturalHeight;
+    const ctx=c.getContext('2d'); ctx.drawImage(img,0,0);
+    const id=ctx.getImageData(0,0,c.width,c.height);
+    const d=id.data, w=c.width, h=c.height;
+    const vis=new Uint8Array(w*h);
+    const queue=[];
+    const tol=60;
+    // sample corners for bg colour
+    const pts=[[0,0],[w-1,0],[0,h-1],[w-1,h-1],[Math.floor(w/2),0],[0,Math.floor(h/2)]];
+    let sr=0,sg=0,sb=0;
+    pts.forEach(([x,y])=>{const i=(y*w+x)*4;sr+=d[i];sg+=d[i+1];sb+=d[i+2];});
+    const br=Math.round(sr/pts.length),bg2=Math.round(sg/pts.length),bb=Math.round(sb/pts.length);
+    const isBg=idx=>Math.abs(d[idx]-br)+Math.abs(d[idx+1]-bg2)+Math.abs(d[idx+2]-bb)<tol*3;
+    [[0,0],[w-1,0],[0,h-1],[w-1,h-1]].forEach(([x,y])=>{
+      const idx=y*w+x; if(!vis[idx]&&isBg(idx*4)){queue.push(idx);vis[idx]=1;}
+    });
+    while(queue.length){
+      const idx=queue.pop(); d[idx*4+3]=0;
+      const x=idx%w,y=Math.floor(idx/w);
+      [[1,0],[-1,0],[0,1],[0,-1]].forEach(([dx,dy])=>{
+        const nx=x+dx,ny=y+dy;
+        if(nx>=0&&nx<w&&ny>=0&&ny<h){const ni=ny*w+nx;if(!vis[ni]&&isBg(ni*4)){vis[ni]=1;queue.push(ni);}}
       });
-      while(queue.length){
-        const idx=queue.pop();
-        d[idx*4+3]=0;
-        const x=idx%w, y=Math.floor(idx/w);
-        [[1,0],[-1,0],[0,1],[0,-1]].forEach(([dx,dy])=>{
-          const nx=x+dx,ny=y+dy;
-          if(nx>=0&&nx<w&&ny>=0&&ny<h){
-            const ni=ny*w+nx;
-            if(!visited[ni]&&isBackground(ni*4)){ visited[ni]=1; queue.push(ni); }
-          }
-        });
-      }
-      ctx.putImageData(imgData,0,0);
-      resolve(canvas.toDataURL('image/png'));
-    };
-    img.onerror=()=>resolve(imgUrl);
-    img.src=imgUrl;
+    }
+    ctx.putImageData(id,0,0);
+    resolve(c.toDataURL('image/png'));
   });
 }
 
-// ── Effects & Borders ──────────────────────────────────────────────────────
+// ── UI ──
 function buildEffectRow(){
-  const row=document.getElementById('effectRow');
+  const row=document.getElementById('erow');
   EFFECTS.forEach(ef=>{
-    const btn=document.createElement('button');
-    btn.className='eff-btn'+(ef.id===currentEffect?' active':'');
-    btn.id='eff-'+ef.id; btn.textContent=ef.label;
-    btn.onclick=()=>{ currentEffect=ef.id; updateEffectUI(); updateStickerAppearance(); updateDownloadLink(); };
-    row.appendChild(btn);
+    const b=document.createElement('button'); b.className='ebtn'+(ef.id==='none'?' on':'');
+    b.id='e-'+ef.id; b.textContent=ef.label;
+    b.onclick=()=>{ curEffect=ef.id; updateEffUI(); updateAppearance(); updateDL(); };
+    row.appendChild(b);
   });
 }
-
 function buildBorderRow(){
-  const row=document.getElementById('borderRow');
+  const row=document.getElementById('brow');
   BORDERS.forEach(br=>{
-    const btn=document.createElement('button');
-    btn.className='bdr-btn'+(br.id===currentBorder?' active':'');
-    btn.id='bdr-'+br.id; btn.textContent=br.label;
-    btn.onclick=()=>{ currentBorder=br.id; updateBorderUI(); updateStickerAppearance(); updateDownloadLink(); };
-    row.appendChild(btn);
+    const b=document.createElement('button'); b.className='bbtn'+(br.id==='none'?' on':'');
+    b.id='b-'+br.id; b.textContent=br.label;
+    b.onclick=()=>{ curBorder=br.id; updateBdrUI(); updateAppearance(); };
+    row.appendChild(b);
   });
 }
+function updateEffUI(){ EFFECTS.forEach(e=>{ const b=document.getElementById('e-'+e.id); if(b) b.className='ebtn'+(e.id===curEffect?' on':''); }); }
+function updateBdrUI(){ BORDERS.forEach(b=>{ const el=document.getElementById('b-'+b.id); if(el) el.className='bbtn'+(b.id===curBorder?' on':''); }); }
 
-function updateEffectUI(){
-  EFFECTS.forEach(ef=>{ const b=document.getElementById('eff-'+ef.id); if(b) b.className='eff-btn'+(ef.id===currentEffect?' active':''); });
-}
-function updateBorderUI(){
-  BORDERS.forEach(br=>{ const b=document.getElementById('bdr-'+br.id); if(b) b.className='bdr-btn'+(br.id===currentBorder?' active':''); });
-}
-
-function updateStickerAppearance(){
-  const img=document.getElementById('stickerImg');
-  if(!img) return;
-  const ef=EFFECTS.find(e=>e.id===currentEffect);
-  const br=BORDERS.find(b=>b.id===currentBorder);
-  img.style.filter=ef?ef.filter:'';
-  if(currentBorder==='rainbow'){
-    img.style.outline='none';
-    img.style.borderRadius='8px';
-    img.style.border='4px solid transparent';
-    img.style.backgroundImage='linear-gradient(white,white),linear-gradient(135deg,#f9a8c9,#ffd966,#a8e6cf,#b3e5fc,#c9b8e8)';
-    img.style.backgroundOrigin='border-box';
-    img.style.backgroundClip='padding-box,border-box';
-  } else {
-    img.style.border='';
-    img.style.backgroundImage='';
-    img.style.backgroundOrigin='';
-    img.style.backgroundClip='';
-    img.style.outline='none';
-    if(br && br.css) img.style.boxShadow=br.css;
-    else img.style.boxShadow='none';
-  }
-  const size=document.getElementById('sizeRange').value;
-  img.style.maxWidth=size+'%';
+function updateAppearance(){
+  const img=document.getElementById('simg'); if(!img) return;
+  const ef=EFFECTS.find(e=>e.id===curEffect);
+  const br=BORDERS.find(b=>b.id===curBorder);
+  img.style.filter=ef?.f||'';
+  img.style.boxShadow=br?.s||'none';
+  const sz=document.getElementById('szr').value;
+  img.style.maxWidth=sz+'%';
 }
 
-function updateSize(v){
-  document.getElementById('sizeVal').textContent=v+'%';
-  updateStickerAppearance();
-}
+window.onSize=function(v){ document.getElementById('szv').textContent=v+'%'; updateAppearance(); };
 
-// ── Download ───────────────────────────────────────────────────────────────
-function updateDownloadLink(){
-  if(!currentStickerDataUrl) return;
-  // render final to canvas with effects
-  const img = new Image();
-  img.onload=()=>{
-    const pad=20;
-    const canvas=document.createElement('canvas');
-    canvas.width=img.naturalWidth+pad*2;
-    canvas.height=img.naturalHeight+pad*2;
-    const ctx=canvas.getContext('2d');
-    const ef=EFFECTS.find(e=>e.id===currentEffect);
-    if(ef && ef.filter) ctx.filter=ef.filter;
-    ctx.drawImage(img,pad,pad);
-    const url=canvas.toDataURL('image/png');
-    document.getElementById('dlBtn').href=url;
-  };
-  img.src=currentStickerDataUrl;
-}
-
-// ── Save sticker ───────────────────────────────────────────────────────────
-async function saveSticker(){
-  if(!currentStickerDataUrl){ showToast('⚠️ 請先上傳照片！'); return; }
+function updateDL(){
+  if(!curDataUrl) return;
   const img=new Image();
-  await new Promise(res=>{ img.onload=res; img.src=currentStickerDataUrl; });
-  const pad=16;
-  const canvas=document.createElement('canvas');
-  canvas.width=img.naturalWidth+pad*2;
-  canvas.height=img.naturalHeight+pad*2;
-  const ctx=canvas.getContext('2d');
-  const ef=EFFECTS.find(e=>e.id===currentEffect);
-  if(ef && ef.filter) ctx.filter=ef.filter;
-  ctx.drawImage(img,pad,pad);
-  const finalUrl=canvas.toDataURL('image/png');
-
-  const today=new Date();
-  const key=dateKey(today.getFullYear(),today.getMonth(),today.getDate());
-  if(!stickerData[key]) stickerData[key]=[];
-  stickerData[key].push(finalUrl);
-  saveData();
-  showToast('🌸 貼紙存好了！');
-  setTimeout(()=>{ showPage('calendar'); }, 1200);
+  img.onload=()=>{
+    const pad=18,c=document.createElement('canvas');
+    c.width=img.naturalWidth+pad*2; c.height=img.naturalHeight+pad*2;
+    const ctx=c.getContext('2d');
+    const ef=EFFECTS.find(e=>e.id===curEffect);
+    if(ef?.f) ctx.filter=ef.f;
+    ctx.drawImage(img,pad,pad);
+    document.getElementById('dlbtn').href=c.toDataURL('image/png');
+  };
+  img.src=curDataUrl;
 }
 
-function resetMaker(){
-  document.getElementById('dropZone').style.display='';
+window.saveSticker=async function(){
+  if(!curDataUrl){toast('⚠️ 請先上傳照片！');return;}
+  const img=new Image(); await new Promise(r=>{img.onload=r;img.src=curDataUrl;});
+  const pad=16,c=document.createElement('canvas');
+  c.width=img.naturalWidth+pad*2; c.height=img.naturalHeight+pad*2;
+  const ctx=c.getContext('2d');
+  const ef=EFFECTS.find(e=>e.id===curEffect); if(ef?.f) ctx.filter=ef.f;
+  ctx.drawImage(img,pad,pad);
+  const final=c.toDataURL('image/png');
+  const today=new Date();
+  const key=dk(today.getFullYear(),today.getMonth(),today.getDate());
+  if(!stickerData[key]) stickerData[key]=[];
+  stickerData[key].push(final);
+  saveData(); toast('🌸 貼紙存好了！');
+  setTimeout(()=>go('cal'),1200);
+};
+
+window.resetMaker=function(){
+  document.getElementById('dz').style.display='';
   document.getElementById('studio').style.display='none';
   document.getElementById('controls').style.display='none';
-  document.getElementById('originalImg').src='';
-  document.getElementById('stickerImg').src='';
-  document.getElementById('stickerImg').style.display='none';
-  document.getElementById('fileInput').value='';
-  currentStickerDataUrl=null;
-}
+  document.getElementById('origImg').src='';
+  document.getElementById('simg').src=''; document.getElementById('simg').style.display='none';
+  document.getElementById('fi').value=''; curDataUrl=null;
+};
 
-// ── Calendar ───────────────────────────────────────────────────────────────
-function dateKey(y,m,d){ return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`; }
+// ── calendar ──
+function dk(y,m,d){ return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`; }
 
-function changeMonth(dir){
+window.chMon=function(dir){
   calMonth+=dir;
-  if(calMonth>11){ calMonth=0; calYear++; }
-  if(calMonth<0){ calMonth=11; calYear--; }
-  renderCalendar();
-}
+  if(calMonth>11){calMonth=0;calYear++;}
+  if(calMonth<0){calMonth=11;calYear--;}
+  renderCal();
+};
 
-function renderCalendar(){
+function renderCal(){
   const today=new Date();
-  document.getElementById('calTitle').textContent=`${calYear} ${MONTHS_ZH[calMonth]}`;
-
-  // stats
-  const monthStickers=Object.keys(stickerData).filter(k=>k.startsWith(`${calYear}-${String(calMonth+1).padStart(2,'0')}`));
-  const totalCount=monthStickers.reduce((s,k)=>s+(stickerData[k]||[]).length,0);
-  const totalDays=monthStickers.length;
-  document.getElementById('calStats').innerHTML=
-    `<div class="stat-chip">本月貼紙 <span>${totalCount}</span> 張</div>`+
-    `<div class="stat-chip">連續 <span>${totalDays}</span> 天</div>`;
-
-  const firstDay=new Date(calYear,calMonth,1).getDay();
-  const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
-  const grid=document.getElementById('calGrid');
-  grid.innerHTML='';
-
-  DAYS_ZH.forEach(d=>{ const el=document.createElement('div'); el.className='cal-day-label'; el.textContent=d; grid.appendChild(el); });
-
-  for(let i=0;i<firstDay;i++){ const el=document.createElement('div'); grid.appendChild(el); }
-
-  for(let d=1;d<=daysInMonth;d++){
-    const key=dateKey(calYear,calMonth,d);
+  document.getElementById('ctitle').textContent=`${calYear} ${MONTHS[calMonth]}`;
+  const mks=Object.keys(stickerData).filter(k=>k.startsWith(`${calYear}-${String(calMonth+1).padStart(2,'0')}`));
+  const total=mks.reduce((s,k)=>s+(stickerData[k]||[]).length,0);
+  document.getElementById('cstats').innerHTML=
+    `<div class="chip">本月貼紙 <span>${total}</span> 張</div><div class="chip">有貼紙 <span>${mks.length}</span> 天</div>`;
+  const fd=new Date(calYear,calMonth,1).getDay();
+  const dim=new Date(calYear,calMonth+1,0).getDate();
+  const grid=document.getElementById('cgrid'); grid.innerHTML='';
+  DAYS.forEach(d=>{const el=document.createElement('div');el.className='cdl';el.textContent=d;grid.appendChild(el);});
+  for(let i=0;i<fd;i++){grid.appendChild(document.createElement('div'));}
+  for(let d=1;d<=dim;d++){
+    const key=dk(calYear,calMonth,d);
     const stickers=stickerData[key]||[];
     const isToday=calYear===today.getFullYear()&&calMonth===today.getMonth()&&d===today.getDate();
     const cell=document.createElement('div');
-    cell.className='cal-cell'+(isToday?' today':'')+(stickers.length?' has-sticker':'');
-    const dateEl=document.createElement('div'); dateEl.className='cal-date'; dateEl.textContent=d;
-    cell.appendChild(dateEl);
+    cell.className='cc'+(isToday?' today':'')+(stickers.length?' has':'');
+    const dd=document.createElement('div'); dd.className='cdate'; dd.textContent=d; cell.appendChild(dd);
     if(stickers.length){
-      const thumbWrap=document.createElement('div'); thumbWrap.className='cal-thumb-wrap';
-      stickers.slice(0,2).forEach(s=>{ const img=document.createElement('img'); img.className='cal-thumb'; img.src=s; thumbWrap.appendChild(img); });
-      if(stickers.length>2){ const more=document.createElement('div'); more.className='cal-more'; more.textContent='+'+(stickers.length-2); thumbWrap.appendChild(more); }
-      cell.appendChild(thumbWrap);
-      cell.onclick=()=>showDayDetail(key,d,stickers);
+      const tw=document.createElement('div'); tw.className='ctw';
+      stickers.slice(0,2).forEach(s=>{const img=document.createElement('img');img.className='cth';img.src=s;tw.appendChild(img);});
+      if(stickers.length>2){const m=document.createElement('div');m.className='cmore';m.textContent='+'+(stickers.length-2);tw.appendChild(m);}
+      cell.appendChild(tw);
+      cell.onclick=()=>showDay(key,d,stickers);
     }
     grid.appendChild(cell);
   }
 }
 
-function showDayDetail(key,d,stickers){
-  document.getElementById('dayTitle').textContent=`${calYear}/${calMonth+1}/${d} 的貼紙 🌸`;
-  const grid=document.getElementById('dayGrid');
-  grid.innerHTML='';
+function showDay(key,d,stickers){
+  document.getElementById('dtitle').textContent=`${calYear}/${calMonth+1}/${d} 的貼紙 🌸`;
+  const grid=document.getElementById('dgrid'); grid.innerHTML='';
   stickers.forEach((s,i)=>{
-    const card=document.createElement('div'); card.className='day-card';
-    const img=document.createElement('img'); img.className='day-img'; img.src=s;
-    const actions=document.createElement('div'); actions.className='day-card-actions';
-    const dl=document.createElement('a'); dl.className='day-dl'; dl.href=s; dl.download=`sticker-${d}-${i+1}.png`; dl.textContent='⬇ 下載';
-    const del=document.createElement('button'); del.className='day-del'; del.textContent='🗑️';
-    del.onclick=()=>openDeleteModal(key,i,s);
-    actions.appendChild(dl); actions.appendChild(del);
-    card.appendChild(img); card.appendChild(actions);
-    grid.appendChild(card);
+    const card=document.createElement('div'); card.className='dcard';
+    const img=document.createElement('img'); img.className='dimg'; img.src=s;
+    const btns=document.createElement('div'); btns.className='dbtns';
+    const dl=document.createElement('a'); dl.className='ddl'; dl.href=s; dl.download=`sticker-${d}-${i+1}.png`; dl.textContent='⬇ 下載';
+    const del=document.createElement('button'); del.className='ddel'; del.textContent='🗑️'; del.onclick=()=>openDelModal(key,i,s);
+    btns.appendChild(dl); btns.appendChild(del);
+    card.appendChild(img); card.appendChild(btns); grid.appendChild(card);
   });
-  showPage('day');
+  go('day');
 }
 
-// ── Delete ─────────────────────────────────────────────────────────────────
-function openDeleteModal(key,index,imgSrc){
-  deleteTarget={key,index};
-  document.getElementById('deletePreviewImg').src=imgSrc;
-  document.getElementById('deleteOverlay').classList.add('open');
-  document.getElementById('deleteConfirmBtn').onclick=confirmDelete;
-}
-function closeDeleteModal(){ document.getElementById('deleteOverlay').classList.remove('open'); deleteTarget=null; }
-function confirmDelete(){
-  if(!deleteTarget) return;
-  const {key,index}=deleteTarget;
-  if(stickerData[key]){ stickerData[key].splice(index,1); if(!stickerData[key].length) delete stickerData[key]; }
-  saveData();
-  closeDeleteModal();
-  showToast('🗑️ 已刪除');
-  // refresh day detail
+window.openDelModal=function(key,idx,src){
+  delTarget={key,idx}; document.getElementById('delImg').src=src;
+  document.getElementById('delOv').classList.add('open');
+  document.getElementById('delConfBtn').onclick=confirmDel;
+};
+window.closeDelModal=function(){ document.getElementById('delOv').classList.remove('open'); delTarget=null; };
+function confirmDel(){
+  if(!delTarget) return;
+  const {key,idx}=delTarget;
+  if(stickerData[key]){ stickerData[key].splice(idx,1); if(!stickerData[key].length) delete stickerData[key]; }
+  saveData(); closeDelModal(); toast('🗑️ 已刪除');
   const d=parseInt(key.split('-')[2]);
-  const stickers=stickerData[key]||[];
-  if(stickers.length) showDayDetail(key,d,stickers);
-  else showPage('calendar');
+  const st=stickerData[key]||[];
+  if(st.length) showDay(key,d,st); else go('cal');
 }
 
-// ── Toast ──────────────────────────────────────────────────────────────────
-let toastTimer;
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>t.classList.remove('show'),2200);
+let toastT;
+function toast(msg){
+  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),2200);
 }
 
-// click outside modal to close
-document.getElementById('deleteOverlay').addEventListener('click',function(e){ if(e.target===this) closeDeleteModal(); });
+document.getElementById('delOv').addEventListener('click',function(e){if(e.target===this)closeDelModal();});
 </script>
 </body>
 </html>
