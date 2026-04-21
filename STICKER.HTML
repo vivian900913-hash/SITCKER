@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-title" content="StickerMe🌸"/>
+<meta name="theme-color" content="#fce4ec"/>
+<title>StickerMe 🌸</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Pacifico&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --pink:#f9a8c9;--pink2:#f472a8;--pink3:#fce4ec;
+  --mint:#a8e6cf;--mint2:#4db6a0;
+  --yellow:#ffd966;--yellow2:#ffb347;
+  --lavender:#c9b8e8;--lavender2:#9c7ed4;
+  --peach:#ffcba4;--peach2:#ff8c69;
+  --sky:#b3e5fc;--sky2:#4fc3f7;
+  --white:#fffdf9;--cream:#fff8f0;
+  --text:#5a3e4b;--text2:#8a6575;--text3:#bba8b2;
+  --shadow:0 4px 20px rgba(249,168,201,.25);
+  --shadow2:0 2px 12px rgba(249,168,201,.18);
+  --radius:20px;--radius2:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+/* floating petals bg */
+.petals-bg{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.petal{position:absolute;font-size:18px;opacity:.35;animation:fall linear infinite}
+@keyframes fall{0%{transform:translateY(-40px) rotate(0deg);opacity:.4}100%{transform:translateY(110vh) rotate(360deg);opacity:0}}
+
+/* ── TOP NAV ── */
+.nav{position:sticky;top:0;z-index:100;background:rgba(255,253,249,.92);backdrop-filter:blur(14px);border-bottom:2px solid var(--pink3);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow2)}
+.nav-logo{font-family:'Pacifico',cursive;font-size:22px;color:var(--pink2);letter-spacing:.5px}
+.nav-logo span{font-size:20px}
+.nav-tabs{display:flex;gap:4px}
+.tab-btn{background:none;border:2px solid transparent;border-radius:30px;padding:7px 14px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--text2);cursor:pointer;transition:all .2s;white-space:nowrap}
+.tab-btn.active{background:var(--pink);border-color:var(--pink2);color:var(--white)}
+.tab-btn:hover:not(.active){background:var(--pink3)}
+
+/* ── PAGES ── */
+.page{display:none;position:relative;z-index:1;animation:fadeIn .3s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── HOME ── */
+.home-wrap{padding:28px 20px 40px;max-width:500px;margin:0 auto;text-align:center}
+.home-hero{margin-bottom:28px}
+.home-title{font-family:'Pacifico',cursive;font-size:36px;color:var(--pink2);line-height:1.2;margin-bottom:10px}
+.home-subtitle{font-size:15px;color:var(--text2);line-height:1.7}
+.home-illus{font-size:56px;margin:18px 0;display:block;animation:bounce 2s ease-in-out infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px 0}
+.feature-card{background:var(--white);border:2px solid var(--pink3);border-radius:var(--radius2);padding:18px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;box-shadow:var(--shadow2)}
+.feature-card .icon{font-size:28px}
+.feature-card b{font-size:13px;color:var(--text)}
+.feature-card span{font-size:12px;color:var(--text3);text-align:center}
+.start-btn{background:linear-gradient(135deg,var(--pink),var(--pink2));border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:17px;font-weight:800;padding:16px 40px;border-radius:50px;cursor:pointer;box-shadow:0 6px 20px rgba(244,114,168,.4);transition:transform .15s,box-shadow .15s;width:100%;max-width:320px;margin:8px auto;display:block}
+.start-btn:active{transform:scale(.97)}
+.cal-btn{background:linear-gradient(135deg,var(--mint),var(--mint2));border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;padding:12px 32px;border-radius:50px;cursor:pointer;box-shadow:0 4px 14px rgba(77,182,160,.3);width:100%;max-width:320px;margin:4px auto;display:block}
+
+/* ── MAKER ── */
+.maker-wrap{padding:20px 16px 40px;max-width:500px;margin:0 auto}
+.section-title{font-size:20px;font-weight:900;color:var(--pink2);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+
+/* api key bar */
+.api-bar{background:var(--white);border:2px solid var(--yellow);border-radius:var(--radius2);padding:12px 14px;margin-bottom:16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.api-bar .key-label{font-size:13px;font-weight:700;color:var(--yellow2);flex-shrink:0}
+.api-input{flex:1;min-width:140px;border:2px solid var(--yellow);border-radius:20px;padding:6px 12px;font-size:13px;font-family:'Nunito',sans-serif;outline:none;background:var(--cream)}
+.api-save-btn{background:var(--yellow);border:none;border-radius:20px;padding:6px 14px;font-size:13px;font-weight:700;font-family:'Nunito',sans-serif;cursor:pointer;white-space:nowrap}
+.api-hint{font-size:11px;color:var(--text3);width:100%}
+.api-hint a{color:var(--pink2)}
+
+/* drop zone */
+.drop-zone{border:3px dashed var(--pink);border-radius:var(--radius);padding:36px 20px;text-align:center;cursor:pointer;background:var(--white);transition:all .2s;margin-bottom:16px;position:relative;overflow:hidden}
+.drop-zone:before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--pink3)55%,var(--sky)100%);opacity:.3}
+.drop-zone.drag{border-color:var(--pink2);background:var(--pink3)}
+.drop-icon{font-size:44px;display:block;margin-bottom:10px;position:relative}
+.drop-text{font-size:16px;font-weight:800;color:var(--pink2);position:relative;margin-bottom:4px}
+.drop-hint{font-size:12px;color:var(--text3);position:relative}
+
+/* studio */
+.studio{gap:12px;align-items:flex-start;margin-bottom:16px;flex-wrap:wrap}
+.studio.visible{display:flex}
+.preview-box{flex:1;min-width:120px;max-width:calc(50% - 30px)}
+.preview-label{font-size:12px;font-weight:700;color:var(--text3);margin-bottom:6px;text-align:center}
+.preview-img{width:100%;height:180px;border-radius:var(--radius2);object-fit:contain;background:var(--cream);border:2px solid var(--pink3);display:block}
+.arrow-col{font-size:22px;color:var(--pink);align-self:center;flex-shrink:0;padding-top:20px}
+.sticker-canvas{width:100%;min-height:160px;border-radius:var(--radius2);background:repeating-conic-gradient(#f0ece8 0% 25%,var(--white) 0% 50%) 0 0/20px 20px;border:2px solid var(--pink3);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.sticker-preview-img{max-width:100%;max-height:200px;object-fit:contain;transition:filter .3s}
+.spinner-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;padding:20px}
+.spinner{width:36px;height:36px;border:3px solid var(--pink3);border-top:3px solid var(--pink2);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner-text{font-size:12px;color:var(--text2);text-align:center;font-weight:700}
+
+/* effects */
+.effect-label{font-size:13px;font-weight:800;color:var(--text2);margin-bottom:8px}
+.effect-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.eff-btn{background:var(--white);border:2px solid var(--pink3);border-radius:20px;padding:7px 14px;font-size:13px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--text2);cursor:pointer;transition:all .15s}
+.eff-btn.active{background:var(--pink);border-color:var(--pink2);color:#fff}
+
+/* border style */
+.border-label{font-size:13px;font-weight:800;color:var(--text2);margin-bottom:8px}
+.border-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.bdr-btn{background:var(--white);border:2px solid var(--pink3);border-radius:20px;padding:7px 14px;font-size:12px;font-weight:700;font-family:'Nunito',sans-serif;color:var(--text2);cursor:pointer;transition:all .15s}
+.bdr-btn.active{background:var(--lavender);border-color:var(--lavender2);color:#fff}
+
+/* sticker size */
+.size-row{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.size-label{font-size:13px;font-weight:700;color:var(--text2);flex-shrink:0}
+input[type=range]{-webkit-appearance:none;height:6px;border-radius:10px;background:linear-gradient(90deg,var(--pink),var(--mint));outline:none;flex:1}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--pink2);cursor:pointer;box-shadow:0 2px 8px rgba(244,114,168,.4)}
+
+/* action btns */
+.action-row{display:flex;gap:10px;flex-wrap:wrap}
+.save-btn{flex:1;background:linear-gradient(135deg,var(--pink),var(--pink2));border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;padding:13px 16px;border-radius:30px;cursor:pointer;box-shadow:0 4px 14px rgba(244,114,168,.35)}
+.dl-btn{background:linear-gradient(135deg,var(--mint),var(--mint2));border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;padding:13px 16px;border-radius:30px;cursor:pointer;text-decoration:none;display:inline-block}
+.reset-btn{background:var(--white);border:2px solid var(--pink3);color:var(--text2);font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;padding:11px 14px;border-radius:30px;cursor:pointer}
+
+/* ── CALENDAR ── */
+.cal-wrap{padding:20px 16px 40px;max-width:500px;margin:0 auto}
+.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.cal-title{font-family:'Pacifico',cursive;font-size:20px;color:var(--pink2)}
+.cal-nav{background:var(--white);border:2px solid var(--pink3);color:var(--pink2);width:36px;height:36px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:900}
+.cal-nav:active{background:var(--pink3)}
+.cal-stats{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.stat-chip{background:var(--white);border:2px solid var(--pink3);border-radius:20px;padding:6px 14px;font-size:12px;font-weight:700;color:var(--text2)}
+.stat-chip span{color:var(--pink2);font-size:15px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.cal-day-label{text-align:center;font-size:11px;font-weight:800;color:var(--text3);padding:4px 0}
+.cal-cell{background:var(--white);border:2px solid var(--pink3);border-radius:12px;min-height:60px;display:flex;flex-direction:column;align-items:center;padding:4px 2px;gap:2px;transition:all .15s}
+.cal-cell.today{border-color:var(--pink2);background:var(--pink3)}
+.cal-cell.has-sticker{border-color:var(--mint2);background:linear-gradient(135deg,#f0fff8,#fff);cursor:pointer}
+.cal-cell.has-sticker:active{transform:scale(.96)}
+.cal-date{font-size:11px;font-weight:800;color:var(--text2)}
+.cal-cell.today .cal-date{color:var(--pink2)}
+.cal-thumb-wrap{display:flex;flex-wrap:wrap;justify-content:center;gap:1px}
+.cal-thumb{width:28px;height:28px;object-fit:contain;border-radius:4px}
+.cal-more{font-size:9px;font-weight:800;color:var(--mint2)}
+.cal-hint{text-align:center;font-size:12px;color:var(--text3);margin-top:12px}
+
+/* ── DAY DETAIL ── */
+.day-wrap{padding:20px 16px 40px;max-width:500px;margin:0 auto}
+.back-btn{background:none;border:none;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--pink2);cursor:pointer;padding:0;margin-bottom:16px;display:flex;align-items:center;gap:6px}
+.day-title{font-size:20px;font-weight:900;color:var(--text);margin-bottom:20px}
+.day-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.day-card{background:var(--white);border:2px solid var(--pink3);border-radius:var(--radius2);padding:12px;display:flex;flex-direction:column;align-items:center;gap:10px;box-shadow:var(--shadow2)}
+.day-img{width:100%;max-height:150px;object-fit:contain}
+.day-card-actions{display:flex;gap:6px;width:100%}
+.day-dl{flex:1;background:var(--mint);border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;padding:8px;border-radius:20px;cursor:pointer;text-align:center;text-decoration:none;display:block}
+.day-del{background:var(--peach);border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;padding:8px 12px;border-radius:20px;cursor:pointer}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(80px);background:linear-gradient(135deg,var(--pink),var(--pink2));color:#fff;font-size:14px;font-weight:700;padding:12px 24px;border-radius:30px;box-shadow:0 6px 20px rgba(244,114,168,.4);z-index:9999;transition:transform .3s ease;pointer-events:none;white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* ── CONFIRM MODAL ── */
+.overlay{position:fixed;inset:0;background:rgba(90,62,75,.35);z-index:500;display:none;align-items:center;justify-content:center}
+.overlay.open{display:flex}
+.modal{background:var(--white);border:3px solid var(--pink3);border-radius:var(--radius);padding:28px 24px;max-width:320px;width:90%;text-align:center;box-shadow:var(--shadow)}
+.modal-title{font-size:18px;font-weight:900;color:var(--text);margin-bottom:10px}
+.modal-body{font-size:14px;color:var(--text2);margin-bottom:20px;line-height:1.6}
+.modal-img{max-width:100px;max-height:100px;object-fit:contain;margin:0 auto 14px;display:block}
+.modal-btns{display:flex;gap:10px;justify-content:center}
+.modal-confirm{background:var(--peach2);border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;padding:11px 24px;border-radius:30px;cursor:pointer}
+.modal-cancel{background:var(--white);border:2px solid var(--pink3);color:var(--text2);font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;padding:11px 24px;border-radius:30px;cursor:pointer}
+
+/* scrollbar */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-thumb{background:var(--pink);border-radius:10px}
+
+/* responsive */
+@media(max-width:360px){
+  .nav-logo{font-size:18px}
+  .tab-btn{padding:6px 10px;font-size:12px}
+  .home-title{font-size:28px}
+}
+</style>
+</head>
+<body>
+
+<!-- Floating petals -->
+<div class="petals-bg" id="petalsContainer"></div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo"><span>🌸</span> StickerMe</div>
+  <div class="nav-tabs">
+    <button class="tab-btn active" onclick="showPage('home')">首頁</button>
+    <button class="tab-btn" onclick="showPage('maker')">製作</button>
+    <button class="tab-btn" onclick="showPage('calendar')">月曆</button>
+  </div>
+</nav>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- DELETE CONFIRM MODAL -->
+<div class="overlay" id="deleteOverlay">
+  <div class="modal">
+    <img id="deletePreviewImg" class="modal-img" src="" alt=""/>
+    <div class="modal-title">🗑️ 刪除貼紙？</div>
+    <div class="modal-body">這個貼紙刪除後就找不回來囉！</div>
+    <div class="modal-btns">
+      <button class="modal-confirm" id="deleteConfirmBtn">刪除</button>
+      <button class="modal-cancel" onclick="closeDeleteModal()">取消</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ HOME PAGE ══════ -->
+<div class="page active" id="page-home">
+  <div class="home-wrap">
+    <div class="home-hero">
+      <span class="home-illus">🌸</span>
+      <h1 class="home-title">StickerMe！</h1>
+      <p class="home-subtitle">上傳照片，AI 智慧摳圖<br/>做成專屬可愛貼紙，存入春日月曆 🌷</p>
+    </div>
+    <button class="start-btn" onclick="showPage('maker');document.getElementById('fileInput').click()">📸 上傳照片，開始製作！</button>
+    <button class="cal-btn" onclick="showPage('calendar')">🗓 查看我的貼紙月曆</button>
+    <div class="feature-grid">
+      <div class="feature-card"><span class="icon">🤖</span><b>AI 智慧摳圖</b><span>自動去背，輪廓清晰</span></div>
+      <div class="feature-card"><span class="icon">✨</span><b>8 種效果</b><span>白邊、發光、彩虹…</span></div>
+      <div class="feature-card"><span class="icon">💾</span><b>永久儲存</b><span>關掉重開都還在</span></div>
+      <div class="feature-card"><span class="icon">🌸</span><b>春日月曆</b><span>每天貼紙一目了然</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ MAKER PAGE ══════ -->
+<div class="page" id="page-maker">
+  <div class="maker-wrap">
+    <div class="section-title">🎨 貼紙製作</div>
+
+    <!-- API Key -->
+    <div class="api-bar">
+      <span class="key-label">🔑 remove.bg</span>
+      <input class="api-input" id="apiKeyInput" type="text" placeholder="API Key（選填）"/>
+      <button class="api-save-btn" onclick="saveApiKey()">儲存</button>
+      <span class="api-hint">不填也能用本機摳圖．<a href="https://www.remove.bg/zh/dashboard#api-key" target="_blank">免費申請 API Key →</a> 每月50次高品質摳圖</span>
+    </div>
+
+    <!-- Drop zone -->
+    <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()"
+         ondragover="event.preventDefault();this.classList.add('drag')"
+         ondragleave="this.classList.remove('drag')"
+         ondrop="onDrop(event)">
+      <span class="drop-icon">🖼️</span>
+      <p class="drop-text">點擊或拖曳照片到這裡</p>
+      <span class="drop-hint">支援 JPG · PNG · WEBP</span>
+    </div>
+    <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleFile(this.files[0])"/>
+
+    <!-- Studio -->
+    <div class="studio" id="studio" style="display:none">
+      <div class="preview-box">
+        <div class="preview-label">原圖</div>
+        <img class="preview-img" id="originalImg" src="" alt=""/>
+      </div>
+      <div class="arrow-col">→</div>
+      <div class="preview-box">
+        <div class="preview-label">貼紙預覽</div>
+        <div class="sticker-canvas" id="stickerCanvas">
+          <div class="spinner-wrap" id="spinnerWrap">
+            <div class="spinner"></div>
+            <p class="spinner-text" id="spinnerText">AI 摳圖中…</p>
+          </div>
+          <img class="sticker-preview-img" id="stickerImg" src="" alt="" style="display:none"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- Controls (shown after sticker ready) -->
+    <div id="controls" style="display:none">
+
+      <!-- Effects -->
+      <div class="effect-label">✨ 濾鏡效果</div>
+      <div class="effect-row" id="effectRow"></div>
+
+      <!-- Border style -->
+      <div class="border-label">💫 貼紙邊框</div>
+      <div class="border-row" id="borderRow"></div>
+
+      <!-- Size -->
+      <div class="size-row">
+        <span class="size-label">📐 大小</span>
+        <input type="range" id="sizeRange" min="50" max="200" value="100" oninput="updateSize(this.value)"/>
+        <span id="sizeVal" style="font-size:12px;color:var(--text3);width:36px">100%</span>
+      </div>
+
+      <!-- Actions -->
+      <div class="action-row">
+        <button class="save-btn" onclick="saveSticker()">💾 存到今天月曆</button>
+        <a class="dl-btn" id="dlBtn" href="#" download="sticker.png">⬇ 下載</a>
+        <button class="reset-btn" onclick="resetMaker()">🔄</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ CALENDAR PAGE ══════ -->
+<div class="page" id="page-calendar">
+  <div class="cal-wrap">
+    <div class="cal-header">
+      <button class="cal-nav" onclick="changeMonth(-1)">‹</button>
+      <div class="cal-title" id="calTitle"></div>
+      <button class="cal-nav" onclick="changeMonth(1)">›</button>
+    </div>
+    <div class="cal-stats" id="calStats"></div>
+    <div class="cal-grid" id="calGrid"></div>
+    <p class="cal-hint">🌸 點擊有貼紙的日期查看詳情</p>
+  </div>
+</div>
+
+<!-- ══════ DAY DETAIL PAGE ══════ -->
+<div class="page" id="page-day">
+  <div class="day-wrap">
+    <button class="back-btn" onclick="showPage('calendar')">← 返回月曆</button>
+    <div class="day-title" id="dayTitle"></div>
+    <div class="day-grid" id="dayGrid"></div>
+  </div>
+</div>
+
+<script>
+// ── Constants ──────────────────────────────────────────────────────────────
+const STORAGE_KEY = 'stickerme_v2';
+const API_KEY_STORAGE = 'stickerme_apikey';
+const MONTHS_ZH = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+const DAYS_ZH = ['日','一','二','三','四','五','六'];
+
+const EFFECTS = [
+  {id:'none',label:'原版',filter:''},
+  {id:'outline',label:'白邊',filter:'drop-shadow(0 0 5px #fff) drop-shadow(0 0 3px #fff) drop-shadow(0 0 8px #fff)'},
+  {id:'pink-glow',label:'粉光',filter:'drop-shadow(0 0 8px #f472a8) drop-shadow(0 0 16px #f9a8c9)'},
+  {id:'rainbow',label:'彩虹',filter:'hue-rotate(0deg) saturate(1.8)'},
+  {id:'vintage',label:'復古',filter:'sepia(0.6) contrast(1.1) brightness(1.05)'},
+  {id:'mint',label:'清新',filter:'hue-rotate(150deg) saturate(1.3) brightness(1.1)'},
+  {id:'warm',label:'暖陽',filter:'sepia(0.3) saturate(1.5) hue-rotate(330deg) brightness(1.1)'},
+  {id:'dreamy',label:'夢幻',filter:'brightness(1.1) saturate(1.4) contrast(0.9) blur(0.3px)'},
+];
+
+const BORDERS = [
+  {id:'none',label:'無邊框',css:''},
+  {id:'white',label:'🤍 白邊',css:'0 0 0 4px #fff, 0 0 0 6px #fce4ec'},
+  {id:'pink',label:'🩷 粉邊',css:'0 0 0 4px #f9a8c9, 0 0 0 7px #fce4ec'},
+  {id:'mint',label:'💚 薄荷',css:'0 0 0 4px #a8e6cf, 0 0 0 7px #f0fff8'},
+  {id:'yellow',label:'💛 檸檬',css:'0 0 0 4px #ffd966, 0 0 0 7px #fffde7'},
+  {id:'rainbow',label:'🌈 彩虹',css:'0 0 0 4px transparent'},
+];
+
+// ── State ──────────────────────────────────────────────────────────────────
+let stickerData = {};
+let calYear = new Date().getFullYear();
+let calMonth = new Date().getMonth();
+let currentEffect = 'none';
+let currentBorder = 'none';
+let currentStickerDataUrl = null;
+let originalFile = null;
+let deleteTarget = null; // {dateKey, index}
+
+// ── Init ───────────────────────────────────────────────────────────────────
+(function init(){
+  generatePetals();
+  loadData();
+  const savedKey = localStorage.getItem(API_KEY_STORAGE);
+  if(savedKey) document.getElementById('apiKeyInput').value = savedKey;
+  buildEffectRow();
+  buildBorderRow();
+  renderCalendar();
+})();
+
+function generatePetals(){
+  const emojis = ['🌸','🌷','🌺','🌼','🌻','🍀','🌿','✿'];
+  const container = document.getElementById('petalsContainer');
+  for(let i=0;i<18;i++){
+    const el = document.createElement('div');
+    el.className='petal';
+    el.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+    el.style.left=Math.random()*100+'%';
+    el.style.animationDuration=(8+Math.random()*12)+'s';
+    el.style.animationDelay=(-Math.random()*15)+'s';
+    el.style.fontSize=(12+Math.random()*16)+'px';
+    container.appendChild(el);
+  }
+}
+
+// ── Storage ────────────────────────────────────────────────────────────────
+function loadData(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    stickerData = raw ? JSON.parse(raw) : {};
+  }catch(e){ stickerData={}; }
+}
+
+function saveData(){
+  try{
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(stickerData));
+  }catch(e){
+    if(e.name==='QuotaExceededError'){
+      showToast('⚠️ 儲存空間不足，請刪除一些舊貼紙');
+    }
+  }
+}
+
+// ── Navigation ─────────────────────────────────────────────────────────────
+function showPage(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  const idx = {home:0,maker:1,calendar:2,day:2};
+  const tabs = document.querySelectorAll('.tab-btn');
+  if(tabs[idx[name]]) tabs[idx[name]].classList.add('active');
+  if(name==='calendar') renderCalendar();
+  window.scrollTo(0,0);
+}
+
+// ── API Key ────────────────────────────────────────────────────────────────
+function saveApiKey(){
+  const v = document.getElementById('apiKeyInput').value.trim();
+  localStorage.setItem(API_KEY_STORAGE, v);
+  showToast(v ? '🔑 API Key 已儲存！' : '🔑 已清除 API Key');
+}
+
+// ── File handling ──────────────────────────────────────────────────────────
+function onDrop(e){
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag');
+  const file = e.dataTransfer.files[0];
+  if(file && file.type.startsWith('image/')) handleFile(file);
+}
+
+async function handleFile(file){
+  if(!file) return;
+  originalFile = file;
+
+  // Read file as data URL so it displays reliably (avoids blob URL issues)
+  const originalUrl = await new Promise((res,rej)=>{
+    const r = new FileReader();
+    r.onload = ()=>res(r.result);
+    r.onerror = ()=>rej(r.error);
+    r.readAsDataURL(file);
+  });
+
+  const origImg = document.getElementById('originalImg');
+  origImg.src = originalUrl;
+  origImg.style.display = 'block';
+
+  document.getElementById('dropZone').style.display='none';
+  const studio = document.getElementById('studio');
+  studio.style.display='flex';
+  document.getElementById('controls').style.display='none';
+  document.getElementById('stickerImg').style.display='none';
+  document.getElementById('spinnerWrap').style.display='flex';
+  currentStickerDataUrl = null;
+  currentEffect='none'; currentBorder='none';
+  updateEffectUI(); updateBorderUI();
+  document.getElementById('sizeRange').value=100;
+  document.getElementById('sizeVal').textContent='100%';
+
+  const apiKey = localStorage.getItem(API_KEY_STORAGE)||'';
+  let resultUrl = null;
+
+  if(apiKey){
+    try{
+      document.getElementById('spinnerText').textContent='remove.bg AI 摳圖中…';
+      resultUrl = await removeBgAPI(file, apiKey);
+    }catch(err){
+      console.warn('remove.bg failed:', err);
+      document.getElementById('spinnerText').textContent='備用本機摳圖中…';
+      resultUrl = await removeBgCanvas(originalUrl);
+    }
+  } else {
+    document.getElementById('spinnerText').textContent='本機智慧摳圖中…';
+    resultUrl = await removeBgCanvas(originalUrl);
+  }
+
+  currentStickerDataUrl = resultUrl;
+  const stickerImg = document.getElementById('stickerImg');
+  stickerImg.src = resultUrl;
+  stickerImg.style.display='block';
+  document.getElementById('spinnerWrap').style.display='none';
+  document.getElementById('controls').style.display='block';
+  updateStickerAppearance();
+  updateDownloadLink();
+}
+
+async function removeBgAPI(file, apiKey){
+  // Use base64 JSON API to avoid FormData cross-origin issues
+  const base64 = await new Promise((res,rej)=>{
+    const r = new FileReader();
+    r.onload = ()=>res(r.result.split(',')[1]);
+    r.onerror = ()=>rej(r.error);
+    r.readAsDataURL(file);
+  });
+  const res = await fetch('https://api.remove.bg/v1.0/removebg',{
+    method:'POST',
+    headers:{
+      'X-Api-Key': apiKey,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ image_file_b64: base64, size: 'auto', format: 'png' })
+  });
+  const json = await res.json();
+  if(!res.ok) throw new Error(json?.errors?.[0]?.title || 'remove.bg error ' + res.status);
+  const b64 = json?.data?.result_b64;
+  if(!b64) throw new Error('no result');
+  return 'data:image/png;base64,' + b64;
+}
+
+function removeBgCanvas(imgUrl){
+  return new Promise(resolve=>{
+    const img = new Image();
+    img.crossOrigin='anonymous';
+    img.onload=()=>{
+      const canvas=document.createElement('canvas');
+      canvas.width=img.naturalWidth; canvas.height=img.naturalHeight;
+      const ctx=canvas.getContext('2d');
+      ctx.drawImage(img,0,0);
+      const imgData=ctx.getImageData(0,0,canvas.width,canvas.height);
+      const d=imgData.data;
+      const w=canvas.width, h=canvas.height;
+      // flood-fill from corners
+      const visited=new Uint8Array(w*h);
+      const queue=[];
+      const tolerance=55;
+      const sampleCorners=()=>{
+        const pts=[[0,0],[w-1,0],[0,h-1],[w-1,h-1],[Math.floor(w/2),0],[0,Math.floor(h/2)]];
+        let r=0,g=0,b=0;
+        pts.forEach(([x,y])=>{const i=(y*w+x)*4;r+=d[i];g+=d[i+1];b+=d[i+2];});
+        return [Math.round(r/pts.length),Math.round(g/pts.length),Math.round(b/pts.length)];
+      };
+      const [br,bg,bb]=sampleCorners();
+      const isBackground=(idx)=>{
+        const dr=Math.abs(d[idx]-br),dg=Math.abs(d[idx+1]-bg),db=Math.abs(d[idx+2]-bb);
+        return dr+dg+db<tolerance*3;
+      };
+      [[0,0],[w-1,0],[0,h-1],[w-1,h-1]].forEach(([x,y])=>{
+        const idx=y*w+x;
+        if(!visited[idx] && isBackground(idx*4)){ queue.push(idx); visited[idx]=1; }
+      });
+      while(queue.length){
+        const idx=queue.pop();
+        d[idx*4+3]=0;
+        const x=idx%w, y=Math.floor(idx/w);
+        [[1,0],[-1,0],[0,1],[0,-1]].forEach(([dx,dy])=>{
+          const nx=x+dx,ny=y+dy;
+          if(nx>=0&&nx<w&&ny>=0&&ny<h){
+            const ni=ny*w+nx;
+            if(!visited[ni]&&isBackground(ni*4)){ visited[ni]=1; queue.push(ni); }
+          }
+        });
+      }
+      ctx.putImageData(imgData,0,0);
+      resolve(canvas.toDataURL('image/png'));
+    };
+    img.onerror=()=>resolve(imgUrl);
+    img.src=imgUrl;
+  });
+}
+
+// ── Effects & Borders ──────────────────────────────────────────────────────
+function buildEffectRow(){
+  const row=document.getElementById('effectRow');
+  EFFECTS.forEach(ef=>{
+    const btn=document.createElement('button');
+    btn.className='eff-btn'+(ef.id===currentEffect?' active':'');
+    btn.id='eff-'+ef.id; btn.textContent=ef.label;
+    btn.onclick=()=>{ currentEffect=ef.id; updateEffectUI(); updateStickerAppearance(); updateDownloadLink(); };
+    row.appendChild(btn);
+  });
+}
+
+function buildBorderRow(){
+  const row=document.getElementById('borderRow');
+  BORDERS.forEach(br=>{
+    const btn=document.createElement('button');
+    btn.className='bdr-btn'+(br.id===currentBorder?' active':'');
+    btn.id='bdr-'+br.id; btn.textContent=br.label;
+    btn.onclick=()=>{ currentBorder=br.id; updateBorderUI(); updateStickerAppearance(); updateDownloadLink(); };
+    row.appendChild(btn);
+  });
+}
+
+function updateEffectUI(){
+  EFFECTS.forEach(ef=>{ const b=document.getElementById('eff-'+ef.id); if(b) b.className='eff-btn'+(ef.id===currentEffect?' active':''); });
+}
+function updateBorderUI(){
+  BORDERS.forEach(br=>{ const b=document.getElementById('bdr-'+br.id); if(b) b.className='bdr-btn'+(br.id===currentBorder?' active':''); });
+}
+
+function updateStickerAppearance(){
+  const img=document.getElementById('stickerImg');
+  if(!img) return;
+  const ef=EFFECTS.find(e=>e.id===currentEffect);
+  const br=BORDERS.find(b=>b.id===currentBorder);
+  img.style.filter=ef?ef.filter:'';
+  if(currentBorder==='rainbow'){
+    img.style.outline='none';
+    img.style.borderRadius='8px';
+    img.style.border='4px solid transparent';
+    img.style.backgroundImage='linear-gradient(white,white),linear-gradient(135deg,#f9a8c9,#ffd966,#a8e6cf,#b3e5fc,#c9b8e8)';
+    img.style.backgroundOrigin='border-box';
+    img.style.backgroundClip='padding-box,border-box';
+  } else {
+    img.style.border='';
+    img.style.backgroundImage='';
+    img.style.backgroundOrigin='';
+    img.style.backgroundClip='';
+    img.style.outline='none';
+    if(br && br.css) img.style.boxShadow=br.css;
+    else img.style.boxShadow='none';
+  }
+  const size=document.getElementById('sizeRange').value;
+  img.style.maxWidth=size+'%';
+}
+
+function updateSize(v){
+  document.getElementById('sizeVal').textContent=v+'%';
+  updateStickerAppearance();
+}
+
+// ── Download ───────────────────────────────────────────────────────────────
+function updateDownloadLink(){
+  if(!currentStickerDataUrl) return;
+  // render final to canvas with effects
+  const img = new Image();
+  img.onload=()=>{
+    const pad=20;
+    const canvas=document.createElement('canvas');
+    canvas.width=img.naturalWidth+pad*2;
+    canvas.height=img.naturalHeight+pad*2;
+    const ctx=canvas.getContext('2d');
+    const ef=EFFECTS.find(e=>e.id===currentEffect);
+    if(ef && ef.filter) ctx.filter=ef.filter;
+    ctx.drawImage(img,pad,pad);
+    const url=canvas.toDataURL('image/png');
+    document.getElementById('dlBtn').href=url;
+  };
+  img.src=currentStickerDataUrl;
+}
+
+// ── Save sticker ───────────────────────────────────────────────────────────
+async function saveSticker(){
+  if(!currentStickerDataUrl){ showToast('⚠️ 請先上傳照片！'); return; }
+  const img=new Image();
+  await new Promise(res=>{ img.onload=res; img.src=currentStickerDataUrl; });
+  const pad=16;
+  const canvas=document.createElement('canvas');
+  canvas.width=img.naturalWidth+pad*2;
+  canvas.height=img.naturalHeight+pad*2;
+  const ctx=canvas.getContext('2d');
+  const ef=EFFECTS.find(e=>e.id===currentEffect);
+  if(ef && ef.filter) ctx.filter=ef.filter;
+  ctx.drawImage(img,pad,pad);
+  const finalUrl=canvas.toDataURL('image/png');
+
+  const today=new Date();
+  const key=dateKey(today.getFullYear(),today.getMonth(),today.getDate());
+  if(!stickerData[key]) stickerData[key]=[];
+  stickerData[key].push(finalUrl);
+  saveData();
+  showToast('🌸 貼紙存好了！');
+  setTimeout(()=>{ showPage('calendar'); }, 1200);
+}
+
+function resetMaker(){
+  document.getElementById('dropZone').style.display='';
+  document.getElementById('studio').style.display='none';
+  document.getElementById('controls').style.display='none';
+  document.getElementById('originalImg').src='';
+  document.getElementById('stickerImg').src='';
+  document.getElementById('stickerImg').style.display='none';
+  document.getElementById('fileInput').value='';
+  currentStickerDataUrl=null;
+}
+
+// ── Calendar ───────────────────────────────────────────────────────────────
+function dateKey(y,m,d){ return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`; }
+
+function changeMonth(dir){
+  calMonth+=dir;
+  if(calMonth>11){ calMonth=0; calYear++; }
+  if(calMonth<0){ calMonth=11; calYear--; }
+  renderCalendar();
+}
+
+function renderCalendar(){
+  const today=new Date();
+  document.getElementById('calTitle').textContent=`${calYear} ${MONTHS_ZH[calMonth]}`;
+
+  // stats
+  const monthStickers=Object.keys(stickerData).filter(k=>k.startsWith(`${calYear}-${String(calMonth+1).padStart(2,'0')}`));
+  const totalCount=monthStickers.reduce((s,k)=>s+(stickerData[k]||[]).length,0);
+  const totalDays=monthStickers.length;
+  document.getElementById('calStats').innerHTML=
+    `<div class="stat-chip">本月貼紙 <span>${totalCount}</span> 張</div>`+
+    `<div class="stat-chip">連續 <span>${totalDays}</span> 天</div>`;
+
+  const firstDay=new Date(calYear,calMonth,1).getDay();
+  const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
+  const grid=document.getElementById('calGrid');
+  grid.innerHTML='';
+
+  DAYS_ZH.forEach(d=>{ const el=document.createElement('div'); el.className='cal-day-label'; el.textContent=d; grid.appendChild(el); });
+
+  for(let i=0;i<firstDay;i++){ const el=document.createElement('div'); grid.appendChild(el); }
+
+  for(let d=1;d<=daysInMonth;d++){
+    const key=dateKey(calYear,calMonth,d);
+    const stickers=stickerData[key]||[];
+    const isToday=calYear===today.getFullYear()&&calMonth===today.getMonth()&&d===today.getDate();
+    const cell=document.createElement('div');
+    cell.className='cal-cell'+(isToday?' today':'')+(stickers.length?' has-sticker':'');
+    const dateEl=document.createElement('div'); dateEl.className='cal-date'; dateEl.textContent=d;
+    cell.appendChild(dateEl);
+    if(stickers.length){
+      const thumbWrap=document.createElement('div'); thumbWrap.className='cal-thumb-wrap';
+      stickers.slice(0,2).forEach(s=>{ const img=document.createElement('img'); img.className='cal-thumb'; img.src=s; thumbWrap.appendChild(img); });
+      if(stickers.length>2){ const more=document.createElement('div'); more.className='cal-more'; more.textContent='+'+(stickers.length-2); thumbWrap.appendChild(more); }
+      cell.appendChild(thumbWrap);
+      cell.onclick=()=>showDayDetail(key,d,stickers);
+    }
+    grid.appendChild(cell);
+  }
+}
+
+function showDayDetail(key,d,stickers){
+  document.getElementById('dayTitle').textContent=`${calYear}/${calMonth+1}/${d} 的貼紙 🌸`;
+  const grid=document.getElementById('dayGrid');
+  grid.innerHTML='';
+  stickers.forEach((s,i)=>{
+    const card=document.createElement('div'); card.className='day-card';
+    const img=document.createElement('img'); img.className='day-img'; img.src=s;
+    const actions=document.createElement('div'); actions.className='day-card-actions';
+    const dl=document.createElement('a'); dl.className='day-dl'; dl.href=s; dl.download=`sticker-${d}-${i+1}.png`; dl.textContent='⬇ 下載';
+    const del=document.createElement('button'); del.className='day-del'; del.textContent='🗑️';
+    del.onclick=()=>openDeleteModal(key,i,s);
+    actions.appendChild(dl); actions.appendChild(del);
+    card.appendChild(img); card.appendChild(actions);
+    grid.appendChild(card);
+  });
+  showPage('day');
+}
+
+// ── Delete ─────────────────────────────────────────────────────────────────
+function openDeleteModal(key,index,imgSrc){
+  deleteTarget={key,index};
+  document.getElementById('deletePreviewImg').src=imgSrc;
+  document.getElementById('deleteOverlay').classList.add('open');
+  document.getElementById('deleteConfirmBtn').onclick=confirmDelete;
+}
+function closeDeleteModal(){ document.getElementById('deleteOverlay').classList.remove('open'); deleteTarget=null; }
+function confirmDelete(){
+  if(!deleteTarget) return;
+  const {key,index}=deleteTarget;
+  if(stickerData[key]){ stickerData[key].splice(index,1); if(!stickerData[key].length) delete stickerData[key]; }
+  saveData();
+  closeDeleteModal();
+  showToast('🗑️ 已刪除');
+  // refresh day detail
+  const d=parseInt(key.split('-')[2]);
+  const stickers=stickerData[key]||[];
+  if(stickers.length) showDayDetail(key,d,stickers);
+  else showPage('calendar');
+}
+
+// ── Toast ──────────────────────────────────────────────────────────────────
+let toastTimer;
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),2200);
+}
+
+// click outside modal to close
+document.getElementById('deleteOverlay').addEventListener('click',function(e){ if(e.target===this) closeDeleteModal(); });
+</script>
+</body>
+</html>
