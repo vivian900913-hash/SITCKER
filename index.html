@@ -199,16 +199,24 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
   <div class="mw">
     <div class="stitle">🎨 貼紙製作</div>
     <div class="ai-notice">
-      🔑 <b>設定 remove.bg API Key</b>（每月免費 50 次高品質 AI 摳圖）<br/>
-      <a href="https://www.remove.bg/zh/dashboard#api-key" target="_blank" style="color:var(--pink2)">免費申請 API Key →</a>
-      <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
+      🔑 <b>設定摳圖 API Key</b>
+      <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;align-items:center">
+        <select id="serviceSelect" style="border:2px solid var(--mint);border-radius:18px;padding:6px 10px;font-size:12px;font-family:Nunito,sans-serif;outline:none;background:var(--cream);color:var(--text);cursor:pointer">
+          <option value="clipdrop">✂️ Clipdrop（推薦，100次/月）</option>
+          <option value="removebg">🎨 remove.bg（50次/月）</option>
+        </select>
+      </div>
+      <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">
         <input id="apiKeyInput" type="password" placeholder="貼上你的 API Key…"
           style="flex:1;min-width:160px;border:2px solid var(--yellow);border-radius:18px;padding:6px 12px;font-size:12px;font-family:Nunito,sans-serif;outline:none;background:var(--cream)"/>
-        <input id="workerInput" type="text" placeholder="你的 Cloudflare Worker 網址"
+        <input id="workerInput" type="text" placeholder="Cloudflare Worker 網址"
           style="flex:1;min-width:160px;border:2px solid var(--pink);border-radius:18px;padding:6px 12px;font-size:12px;font-family:Nunito,sans-serif;outline:none;background:var(--cream)"/>
         <button onclick="saveSettings()" style="background:var(--yellow);border:none;border-radius:18px;padding:6px 14px;font-size:12px;font-weight:700;font-family:Nunito,sans-serif;cursor:pointer;white-space:nowrap">儲存</button>
       </div>
-      <div style="font-size:10px;color:var(--text3);margin-top:5px">沒有設定也能用，系統會自動改用本機備用摳圖</div>
+      <div style="font-size:10px;color:var(--text3);margin-top:5px">
+        免費申請：<a href="https://clipdrop.co/apis" target="_blank" style="color:var(--pink2)">Clipdrop →</a>　
+        <a href="https://www.remove.bg/zh/dashboard#api-key" target="_blank" style="color:var(--pink2)">remove.bg →</a>
+      </div>
     </div>
     <div class="dz" id="dz"
          onclick="document.getElementById('fi').click()"
@@ -333,15 +341,19 @@ function saveData(){
 function loadSettings(){
   const k=localStorage.getItem('sm_apikey')||'';
   const w=localStorage.getItem('sm_worker')||'';
+  const s=localStorage.getItem('sm_service')||'clipdrop';
   if(k) document.getElementById('apiKeyInput').value=k;
   if(w) document.getElementById('workerInput').value=w;
+  document.getElementById('serviceSelect').value=s;
 }
 
 window.saveSettings=function(){
   const k=document.getElementById('apiKeyInput').value.trim();
   const w=document.getElementById('workerInput').value.trim();
+  const s=document.getElementById('serviceSelect').value;
   localStorage.setItem('sm_apikey',k);
   localStorage.setItem('sm_worker',w);
+  localStorage.setItem('sm_service',s);
   toast('✅ 設定已儲存！');
 };
 
@@ -419,17 +431,19 @@ async function handleFile(file){
   updateDL();
 }
 
-// ── remove.bg via Cloudflare Worker ──
+// ── API via Cloudflare Worker ──
 async function removeBgAPI(dataUrl, apiKey, workerUrl){
   const base64 = dataUrl.split(',')[1];
+  const service = localStorage.getItem('sm_service')||'clipdrop';
   const res = await fetch(workerUrl, {
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({ image_file_b64: base64, api_key: apiKey })
+    body: JSON.stringify({ image_file_b64: base64, api_key: apiKey, service })
   });
   const json = await res.json();
   if(!res.ok) throw new Error(json?.errors?.[0]?.title||json?.error||'error '+res.status);
-  const b64 = json?.data?.result_b64;
+  // Clipdrop returns result_b64 directly, remove.bg returns data.result_b64
+  const b64 = json?.result_b64 || json?.data?.result_b64;
   if(!b64) throw new Error('no result');
   return 'data:image/png;base64,'+b64;
 }
